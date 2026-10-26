@@ -56,3 +56,24 @@ export function dateKey(date: Date, timeZone = storeTimeZone()) {
   const parts = zonedParts(date, timeZone);
   return `${parts.year}-${String(parts.month).padStart(2, "0")}-${String(parts.day).padStart(2, "0")}`;
 }
+
+export function addZonedDays(date: Date, days: number, timeZone = storeTimeZone()) {
+  const parts = zonedParts(date, timeZone);
+  return zonedTimeToUtc({ ...parts, day: parts.day + days, hour: 12, minute: 0 }, timeZone);
+}
+
+export function addZonedMonths(date: Date, months: number, timeZone = storeTimeZone()) {
+  const parts = zonedParts(date, timeZone);
+  return zonedTimeToUtc({ year: parts.year, month: parts.month + months, day: 1, hour: 12, minute: 0 }, timeZone);
+}
+
+export function startOfZonedWeek(date: Date, timeZone = storeTimeZone()) {
+  const weekday = new Intl.DateTimeFormat("en-US", { timeZone, weekday: "short" }).format(date);
+  const index = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 }[weekday] ?? 0;
+  return addZonedDays(date, -index, timeZone);
+}
+
+export function startOfZonedYear(date: Date, timeZone = storeTimeZone()) {
+  const parts = zonedParts(date, timeZone);
+  return zonedTimeToUtc({ year: parts.year, month: 1, day: 1, hour: 12, minute: 0 }, timeZone);
+}

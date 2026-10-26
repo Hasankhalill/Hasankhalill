@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SalesChart } from "@/components/sales-chart";
 import { dashboardSnapshot, salesSeries } from "@/lib/dashboard";
 import { formatMoney } from "@/lib/money";
 import { getSiteContent } from "@/lib/content";
@@ -9,7 +10,6 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
   const query = await searchParams;
   const range = query.range === "week" || query.range === "month" || query.range === "year" ? query.range : "day";
   const [content, data, series] = await Promise.all([getSiteContent(), dashboardSnapshot(), salesSeries(range)]);
-  const max = Math.max(1, ...series.map((point) => point.revenueCents));
   return (
     <div className="space-y-8">
       <h1 className="font-display text-4xl">Overview</h1>
@@ -26,16 +26,7 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
             <Link key={item} href={`/admin?range=${item}`} className={item === range ? "font-semibold text-primary" : ""}>{item}</Link>
           ))}
         </div>
-        {series.length === 0 ? <p className="mt-6 text-sm text-muted">No sales in this range.</p> : (
-          <div className="mt-6 flex h-40 items-end gap-2">
-            {series.map((point) => (
-              <div key={point.label} className="flex h-full flex-1 flex-col justify-end">
-                <div className="rounded-t bg-primary" style={{ height: `${Math.max(4, (point.revenueCents / max) * 100)}%` }} title={formatMoney(point.revenueCents, content.currency)} />
-                <p className="mt-1 truncate text-[10px] text-muted">{point.label}</p>
-              </div>
-            ))}
-          </div>
-        )}
+        <SalesChart points={series} currency={content.currency} />
       </section>
       <section className="grid gap-6 lg:grid-cols-2">
         <div>

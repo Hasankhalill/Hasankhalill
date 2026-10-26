@@ -49,7 +49,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/45 to-transparent" />
         <div className="relative mx-auto flex min-h-[78vh] max-w-6xl flex-col justify-end px-5 py-16 md:justify-center">
           <p className="text-xs uppercase tracking-[0.22em] text-white/80">Home and personal care</p>
-          <h1 className="rise mt-4 max-w-xl font-display text-5xl leading-tight md:text-7xl">{content.heroHeadline}</h1>
+          <h1 className="rise mt-4 max-w-xl font-display text-4xl leading-tight sm:text-5xl md:text-7xl">{content.heroHeadline}</h1>
           <p className="mt-5 max-w-md text-lg text-white/90">{content.heroSubhead}</p>
           <Link href="/shop" className="btn btn-light mt-8 w-fit">Shop now</Link>
         </div>

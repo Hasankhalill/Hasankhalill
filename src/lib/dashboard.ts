@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "./db";
-import { dateKey, storeTimeZone, zonedDayBounds, zonedMonthBounds } from "./time";
+import { addZonedDays, addZonedMonths, dateKey, startOfZonedWeek, startOfZonedYear, storeTimeZone, zonedDayBounds, zonedMonthBounds } from "./time";
 
 const revenueWhere = Prisma.sql`
   o.status <> 'CANCELLED'
@@ -73,23 +73,61 @@ export async function dashboardSnapshot() {
   };
 }
 
-export async function salesSeries(range: "day" | "week" | "month" | "year") {
+export type SalesPoint = {
+  label: string;
+  axisLabel: string;
+  revenueCents: number;
+  orders: number;
+};
+
+function axisLabel(range: "day" | "week" | "month" | "year", date: Date) {
+  const timeZone = storeTimeZone();
+  if (range === "year") return new Intl.DateTimeFormat("en-GB", { timeZone, year: "numeric" }).format(date);
+  if (range === "month") return new Intl.DateTimeFormat("en-GB", { timeZone, month: "short", year: "2-digit" }).format(date);
+  return new Intl.DateTimeFormat("en-GB", { timeZone, day: "numeric", month: "short" }).format(date);
+}
+
+function seriesSlots(range: "day" | "week" | "month" | "year", now = new Date()) {
+  if (range === "day") {
+    return Array.from({ length: 14 }, (_, index) => addZonedDays(now, index - 13));
+  }
+  if (range === "week") {
+    const start = startOfZonedWeek(now);
+    return Array.from({ length: 12 }, (_, index) => addZonedDays(start, (index - 11) * 7));
+  }
+  if (range === "month") {
+    return Array.from({ length: 12 }, (_, index) => addZonedMonths(now, index - 11));
+  }
+  const start = startOfZonedYear(now);
+  return Array.from({ length: 5 }, (_, index) => addZonedMonths(start, (index - 4) * 12));
+}
+
+export async function salesSeries(range: "day" | "week" | "month" | "year"): Promise<SalesPoint[]> {
   const unit = range === "day" ? "day" : range === "week" ? "week" : range === "month" ? "month" : "year";
   const count = range === "day" ? 14 : range === "week" ? 12 : range === "month" ? 12 : 5;
   const interval = `${count} ${unit}`;
   const rows = await prisma.$queryRaw<{ bucket: Date; revenue: number; orders: number }[]>`
     SELECT date_trunc(${unit}, o."placedAt" AT TIME ZONE ${storeTimeZone()}) AS bucket,
-      COALESCE(SUM(o."totalCents"), 0)::int AS revenue,
+      COALESCE(SUM(o."totalCents" - COALESCE(r.refunded, 0)), 0)::int AS revenue,
       COUNT(*)::int AS orders
     FROM "Order" o
+    LEFT JOIN (
+      SELECT "orderId", SUM("amountCents") AS refunded FROM "Refund" GROUP BY "orderId"
+    ) r ON r."orderId" = o.id
     WHERE ${revenueWhere}
       AND o."placedAt" >= NOW() - ${interval}::interval
     GROUP BY 1
     ORDER BY 1
   `;
-  return rows.map((row) => ({
-    label: dateKey(new Date(row.bucket)),
-    revenueCents: row.revenue,
-    orders: row.orders,
-  }));
+  const byDay = new Map(rows.map((row) => [dateKey(new Date(row.bucket)), row]));
+  return seriesSlots(range).map((date) => {
+    const key = dateKey(date);
+    const row = byDay.get(key);
+    return {
+      label: key,
+      axisLabel: axisLabel(range, date),
+      revenueCents: row?.revenue ?? 0,
+      orders: row?.orders ?? 0,
+    };
+  });
 }

@@ -85,7 +85,7 @@ Keep dumps off the app server. Restoring replaces the current database.
 
 ## What is unfinished
 
-- No production host or CI pipeline is configured.
+- No production host is configured. GitHub Actions runs the Vitest suite against PostgreSQL.
 - Card checkout is not a live Lebanese acquiring integration. Areeba does not charge anyone.
 - Stripe, when configured, is a sandbox and does not pay out to a Lebanese merchant account.
 - Email is not sent until Resend or SMTP is configured.

@@ -69,7 +69,7 @@ export default async function ProductPage({ params, searchParams }: { params: Pr
       <div className="mt-4 grid gap-10 lg:grid-cols-2">
         <Gallery images={product.images.map((image) => ({ url: image.url, alt: image.alt }))} />
         <div>
-          <h1 className="font-display text-5xl">{product.name}</h1>
+          <h1 className="font-display text-4xl leading-tight sm:text-5xl">{product.name}</h1>
           <p className="mt-3 text-sm text-muted">{product.ratingCount ? `${product.rating.toFixed(1)} / 5 from ${product.ratingCount} reviews` : "No reviews yet"}</p>
           <p className="mt-5 leading-7 text-muted">{product.description}</p>
           <div className="mt-6"><BuyBox variants={variants} currency={content.currency} /></div>

@@ -443,7 +443,9 @@ describe("admin access and dashboard queries", () => {
     expect(snapshot.all.orders).toBe(0);
     expect(snapshot.all.revenueCents).toBe(0);
     expect(snapshot.all.aovCents).toBe(0);
-    expect(await salesSeries("day")).toEqual([]);
+    const series = await salesSeries("day");
+    expect(series).toHaveLength(14);
+    expect(series.every((point) => point.revenueCents === 0 && point.orders === 0)).toBe(true);
   });
 
   it("counts rate-limit attempts", async () => {
