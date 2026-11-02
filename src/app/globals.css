@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1f7a4d;
+  --color-primary-dark: #145c38;
+  --color-primary-soft: #e7f4ec;
+  --color-sale: #c23b3b;
+  --color-ink: #1a1f1c;
+  --color-muted: #5c665f;
+  --color-line: #e4e8e5;
+  --color-warm: #f6f7f4;
+  --font-sans: var(--font-source), "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #fff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 80;
+  background: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+}
+.skip-link:focus { top: 1rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.95rem; }
+.field span { font-weight: 600; }
+.field input, .field textarea, .field select {
+  border: 1px solid var(--color-line);
+  border-radius: 0.85rem;
+  padding: 0.75rem 0.9rem;
+  background: white;
+  color: var(--color-ink);
+}
+.field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible,
+.btn:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+}
+.btn:hover { background: var(--color-primary-dark); }
+.btn[disabled] { opacity: 0.55; }
+.btn-light { background: white; color: var(--color-primary-dark); }
+.btn-light:hover { background: var(--color-primary-soft); }
+.btn-ghost { background: white; color: var(--color-ink); border: 1px solid var(--color-line); }
+.btn-ghost:hover { background: var(--color-warm); }
+.btn-sale { background: var(--color-sale); }
+.btn-sale:hover { background: #a12e2e; }
+.error {
+  color: var(--color-sale);
+  font-size: 0.92rem;
+}
+.card {
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  background: white;
+}
+.rise { animation: rise 0.55s ease both; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media print {
+  header, footer, .no-print { display: none !important; }
+  body { background: white; }
+}
