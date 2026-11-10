@@ -1,0 +1,40 @@
+{% doc %}
+Renders a breadcrumb trail. Department parents come from the navigation menu when a child link matches the collection.
+@param {string} current_title - Current page title
+@param {linklist} [menu] - Department menu
+@param {collection} [collection] - Collection for the middle crumb
+@param {product} [product] - Product, used when no collection context is present
+{% enddoc %}
+{%- liquid
+  assign parent_title = ''
+  assign parent_url = ''
+  assign crumb_collection = collection
+  if crumb_collection == blank and product != blank and product.collections.size > 0
+    assign crumb_collection = product.collections.first
+  endif
+  if menu != blank and crumb_collection != blank
+    for link in menu.links
+      if link.url == crumb_collection.url
+        assign parent_title = ''
+      endif
+      for child in link.links
+        if child.url == crumb_collection.url
+          assign parent_title = link.title
+          assign parent_url = link.url
+        endif
+      endfor
+    endfor
+  endif
+-%}
+<nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs' | t }}">
+  <ol>
+    <li><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></li>
+    {%- if parent_title != blank and parent_url != blank -%}
+      <li><a href="{{ parent_url }}">{{ parent_title }}</a></li>
+    {%- endif -%}
+    {%- if crumb_collection != blank and product != blank -%}
+      <li><a href="{{ crumb_collection.url }}">{{ crumb_collection.title }}</a></li>
+    {%- endif -%}
+    <li aria-current="page">{{ current_title }}</li>
+  </ol>
+</nav>

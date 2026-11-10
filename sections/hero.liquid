@@ -1,0 +1,75 @@
+<section class="hero band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width hero__grid">
+    <div>
+      <p class="eyebrow">{% render 'brand-name' %}</p>
+      <h1>{{ section.settings.heading }}</h1>
+      {%- if section.settings.subheading != blank -%}
+        <p class="lede">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+      <predictive-search class="predictive" data-predictive-url="{{ routes.predictive_search_url }}">
+        <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+          <div class="search-form__field">
+            <label for="Search-{{ section.id }}">{{ 'search.label' | t }}</label>
+            <input
+              id="Search-{{ section.id }}"
+              type="search"
+              name="q"
+              role="combobox"
+              aria-expanded="false"
+              aria-controls="Predictive-{{ section.id }}"
+              aria-autocomplete="list"
+              autocomplete="off"
+              placeholder="{{ 'search.placeholder' | t }}"
+            >
+          </div>
+          <input type="hidden" name="options[prefix]" value="last">
+          <button class="button" type="submit">{{ 'search.submit' | t }}</button>
+          <div id="Predictive-{{ section.id }}" class="predictive__results" hidden></div>
+        </form>
+      </predictive-search>
+    </div>
+    <div class="hero__art">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 46vw, 100vw', alt: section.settings.image.alt }}
+      {%- else -%}
+        {% render 'market-art' %}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.hero.name",
+  "enabled_on": { "templates": ["index"] },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Shop the aisles"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "t:sections.hero.subheading",
+      "default": "Everyday food, household, and personal care. Products show in an aisle after they are added to that collection."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.hero.image",
+      "info": "t:sections.hero.image_info"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-2"
+    }
+  ],
+  "presets": [
+    { "name": "t:sections.hero.name" }
+  ]
+}
+{% endschema %}

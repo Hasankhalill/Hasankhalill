@@ -1,0 +1,87 @@
+{%- liquid
+  assign department_handle = block.settings.handle | handleize
+  if department_handle != blank
+    assign department_url = routes.collections_url | append: '/' | append: department_handle
+  else
+    assign department_url = routes.collections_url
+  endif
+  assign icon_name = block.settings.icon
+  if icon_name == blank
+    assign icon_name = 'basket'
+  endif
+-%}
+<div class="dept" {{ block.shopify_attributes }}>
+  <div class="dept__head">
+    <a class="dept__title" href="{{ department_url }}">
+      <span class="dept__mark" aria-hidden="true">{% render 'icon', name: icon_name %}</span>
+      <span>{{ block.settings.title }}</span>
+    </a>
+    <button
+      class="dept__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="Dept-{{ section.id }}-{{ block.id }}"
+    >
+      <span class="visually-hidden">{{ 'departments.show' | t: title: block.settings.title }}</span>
+      {% render 'icon', name: 'chevron' %}
+    </button>
+  </div>
+  {%- if block.settings.image != blank -%}
+    {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 600, 900', sizes: '(min-width: 700px) 40vw, 100vw', alt: block.settings.image.alt, class: 'dept__image' }}
+  {%- endif -%}
+  <div class="dept__children" id="Dept-{{ section.id }}-{{ block.id }}">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:blocks.department.name",
+  "blocks": [{ "type": "_aisle-link" }],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:blocks.department.title",
+      "default": "Department"
+    },
+    {
+      "type": "text",
+      "id": "handle",
+      "label": "t:blocks.department.handle",
+      "info": "t:blocks.department.handle_info"
+    },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "t:blocks.department.icon",
+      "default": "basket",
+      "options": [
+        { "value": "cleaning", "label": "t:options.icon_cleaning" },
+        { "value": "care", "label": "t:options.icon_care" },
+        { "value": "pantry", "label": "t:options.icon_pantry" },
+        { "value": "bakery", "label": "t:options.icon_bakery" },
+        { "value": "snacks", "label": "t:options.icon_snacks" },
+        { "value": "drinks", "label": "t:options.icon_drinks" },
+        { "value": "protein", "label": "t:options.icon_protein" },
+        { "value": "dairy", "label": "t:options.icon_dairy" },
+        { "value": "produce", "label": "t:options.icon_produce" },
+        { "value": "frozen", "label": "t:options.icon_frozen" },
+        { "value": "family", "label": "t:options.icon_family" },
+        { "value": "sports", "label": "t:options.icon_sports" },
+        { "value": "basket", "label": "t:options.icon_basket" }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:blocks.department.image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks.department.name"
+    }
+  ]
+}
+{% endschema %}

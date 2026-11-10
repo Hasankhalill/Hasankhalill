@@ -1,0 +1,50 @@
+{%- liquid
+  assign is_distinct = false
+  if block.settings.distinct or block.settings.handle == 'sports-nutrition'
+    assign is_distinct = true
+  endif
+  assign aisle_handle = block.settings.handle | handleize
+  if aisle_handle != blank
+    assign aisle_url = routes.collections_url | append: '/' | append: aisle_handle
+  else
+    assign aisle_url = routes.collections_url
+  endif
+-%}
+<a class="aisle-link{% if is_distinct %} aisle-link--distinct{% endif %}" href="{{ aisle_url }}" {{ block.shopify_attributes }}>
+  {%- if is_distinct -%}
+    <span class="aisle-link__flag">{{ 'departments.distinct' | t }}</span>
+  {%- endif -%}
+  <span>{{ block.settings.title }}</span>
+</a>
+
+{% schema %}
+{
+  "name": "t:blocks.aisle.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:blocks.aisle.title",
+      "default": "Subcategory"
+    },
+    {
+      "type": "text",
+      "id": "handle",
+      "label": "t:blocks.aisle.handle",
+      "info": "t:blocks.aisle.handle_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "distinct",
+      "label": "t:blocks.aisle.distinct",
+      "info": "t:blocks.aisle.distinct_info",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks.aisle.name"
+    }
+  ]
+}
+{% endschema %}

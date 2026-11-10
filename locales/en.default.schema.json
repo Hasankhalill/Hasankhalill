@@ -1,0 +1,194 @@
+{
+  "labels": {
+    "scheme": "Color scheme",
+    "heading": "Heading",
+    "text": "Text"
+  },
+  "options": {
+    "icon_cleaning": "Cleaning",
+    "icon_care": "Personal care",
+    "icon_pantry": "Pantry",
+    "icon_bakery": "Bakery",
+    "icon_snacks": "Snacks",
+    "icon_drinks": "Drinks",
+    "icon_protein": "Protein",
+    "icon_dairy": "Dairy",
+    "icon_produce": "Produce",
+    "icon_frozen": "Frozen",
+    "icon_family": "Family",
+    "icon_sports": "Sports nutrition",
+    "icon_basket": "Basket"
+  },
+  "settings_schema": {
+    "logo": {
+      "name": "Brand",
+      "help": "The supermarket name uses your Shopify store name unless you type an override.",
+      "brand": "Name override",
+      "image": "Logo",
+      "width": "Logo width",
+      "favicon": "Favicon"
+    },
+    "typography": {
+      "name": "Typography",
+      "heading": "Heading font",
+      "body": "Body font"
+    },
+    "colors": {
+      "name": "Colors",
+      "accent": "Citrus accent",
+      "page": "Page color scheme",
+      "width": "Page width",
+      "schemes": "Color schemes",
+      "background": "Background",
+      "gradient": "Background gradient",
+      "gradient_info": "Replaces the solid background when set.",
+      "text": "Text",
+      "button": "Button",
+      "button_label": "Button label",
+      "secondary": "Secondary button",
+      "shadow": "Shadow"
+    },
+    "product": {
+      "name": "Products",
+      "vendor": "Show brand on products"
+    },
+    "social": {
+      "name": "Social links",
+      "help": "Leave these blank. Links appear only after you add a real URL.",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "tiktok": "TikTok",
+      "youtube": "YouTube"
+    }
+  },
+  "sections": {
+    "announcement": {
+      "name": "Announcement",
+      "text": "Text",
+      "link": "Link",
+      "label": "Link label"
+    },
+    "header": {
+      "name": "Header",
+      "menu": "Department menu",
+      "menu_info": "Use a menu named Departments. Parent links are departments and child links are subcategory collections. Until that menu has links, the fallback blocks are shown.",
+      "sticky": "Sticky header"
+    },
+    "footer": {
+      "name": "Footer",
+      "text": "Text",
+      "menu": "Footer menu",
+      "legal": "Legal menu"
+    },
+    "hero": {
+      "name": "Hero",
+      "subheading": "Subheading",
+      "image": "Banner image",
+      "image_info": "Optional. An illustration is shown when no image is selected."
+    },
+    "aisles": {
+      "name": "Department aisles",
+      "intro": "Intro",
+      "help": "Reorder department blocks to change the floor order. Keep the same order in the Departments menu."
+    },
+    "featured": {
+      "name": "Featured departments",
+      "intro": "Intro"
+    },
+    "rail": {
+      "name": "Featured products",
+      "collection": "Collection",
+      "help": "This row is hidden on the storefront when the collection is empty or not selected."
+    },
+    "collection": {
+      "name": "Collection",
+      "menu": "Department menu",
+      "menu_info": "Used for breadcrumbs. Parent links should be departments."
+    },
+    "product": {
+      "name": "Product"
+    },
+    "related": {
+      "name": "Related products"
+    },
+    "search": {
+      "name": "Search"
+    },
+    "predictive": {
+      "name": "Predictive search"
+    },
+    "cart": {
+      "name": "Cart"
+    },
+    "drawer": {
+      "name": "Cart drawer"
+    },
+    "page": {
+      "name": "Page",
+      "body": "Starter text",
+      "body_info": "Shown only when the page body in Admin is empty."
+    },
+    "contact": {
+      "name": "Contact",
+      "intro": "Intro",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Hours"
+    },
+    "missing": {
+      "name": "404"
+    },
+    "list": {
+      "name": "Collection list"
+    },
+    "blog": {
+      "name": "Blog"
+    },
+    "article": {
+      "name": "Article"
+    },
+    "password": {
+      "name": "Password"
+    },
+    "login": {
+      "name": "Login"
+    },
+    "register": {
+      "name": "Register"
+    },
+    "account": {
+      "name": "Account"
+    },
+    "order": {
+      "name": "Order"
+    },
+    "addresses": {
+      "name": "Addresses"
+    },
+    "activate": {
+      "name": "Activate account"
+    },
+    "reset": {
+      "name": "Reset password"
+    }
+  },
+  "blocks": {
+    "department": {
+      "name": "Department",
+      "title": "Title",
+      "handle": "Collection handle",
+      "handle_info": "Kebab-case handle. The theme links to the collections path plus this handle, including before that collection exists.",
+      "icon": "Icon",
+      "image": "Optional image"
+    },
+    "aisle": {
+      "name": "Subcategory",
+      "title": "Title",
+      "handle": "Collection handle",
+      "handle_info": "Kebab-case handle. The link is shown even if the collection has not been created yet.",
+      "distinct": "Visually distinct",
+      "distinct_info": "Use this for Sports nutrition so it stays separate from meat, fish, eggs, and other protein foods."
+    }
+  }
+}

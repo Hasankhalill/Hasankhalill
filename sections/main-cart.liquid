@@ -1,0 +1,21 @@
+<section class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    <h1>{{ 'cart.title' | t }}</h1>
+    {% render 'cart-form', section_id: section.id, show_note: true %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.cart.name",
+  "enabled_on": { "templates": ["cart"] },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

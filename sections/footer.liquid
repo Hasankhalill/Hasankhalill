@@ -1,0 +1,99 @@
+<footer class="site-footer band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width footer-grid">
+    <div>
+      <a class="wordmark" href="{{ routes.root_url }}">
+        <span class="wordmark__mark" aria-hidden="true">{% render 'icon', name: 'mark' %}</span>
+        <span>{% render 'brand-name' %}</span>
+      </a>
+      {%- if section.settings.text != blank -%}
+        <div class="rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+      <nav aria-label="{{ 'footer.menu' | t }}">
+        <ul class="footer-links">
+          {%- for link in section.settings.menu.links -%}
+            <li><a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- elsif request.design_mode -%}
+      <p class="editor-note">{{ 'footer.menu_missing' | t }}</p>
+    {%- endif -%}
+    <div>
+      {%- if section.settings.legal_menu != blank and section.settings.legal_menu.links.size > 0 -%}
+        <ul class="footer-links">
+          {%- for link in section.settings.legal_menu.links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if shop.policies.size > 0 -%}
+        <ul class="policy-links">
+          {%- for policy in shop.policies -%}
+            {%- if policy.url != blank and policy.title != blank -%}
+              <li><a href="{{ policy.url }}">{{ policy.title }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <ul class="footer-links">
+        {%- if settings.social_instagram != blank -%}
+          <li><a href="{{ settings.social_instagram }}" rel="noopener noreferrer">{{ 'footer.instagram' | t }}</a></li>
+        {%- endif -%}
+        {%- if settings.social_facebook != blank -%}
+          <li><a href="{{ settings.social_facebook }}" rel="noopener noreferrer">{{ 'footer.facebook' | t }}</a></li>
+        {%- endif -%}
+        {%- if settings.social_tiktok != blank -%}
+          <li><a href="{{ settings.social_tiktok }}" rel="noopener noreferrer">{{ 'footer.tiktok' | t }}</a></li>
+        {%- endif -%}
+        {%- if settings.social_youtube != blank -%}
+          <li><a href="{{ settings.social_youtube }}" rel="noopener noreferrer">{{ 'footer.youtube' | t }}</a></li>
+        {%- endif -%}
+      </ul>
+    </div>
+  </div>
+  <div class="page-width">
+    {%- if shop.enabled_payment_types.size > 0 -%}
+      <ul class="payment-icons" aria-label="{{ 'footer.payments' | t }}">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "t:sections.footer.name",
+  "enabled_on": { "groups": ["footer"] },
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.footer.text",
+      "default": "<p>Hycare is a supermarket for everyday food, cleaning, and household essentials.</p>"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:sections.footer.menu",
+      "default": "footer"
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "t:sections.footer.legal",
+      "default": "footer-legal"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-2"
+    }
+  ]
+}
+{% endschema %}

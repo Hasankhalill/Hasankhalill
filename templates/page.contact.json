@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "contact-form",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "intro": "<p>Send a message and the store will reply by email.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

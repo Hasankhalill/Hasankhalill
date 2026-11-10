@@ -1,0 +1,54 @@
+{% doc %}
+Loads theme fonts, the base stylesheet, and color-scheme variables.
+{% enddoc %}
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_body_font
+  assign heading_bold = heading_font | font_modify: 'weight', 'bold'
+  assign body_bold = body_font | font_modify: 'weight', 'bold'
+  assign body_italic = body_font | font_modify: 'style', 'italic'
+-%}
+{%- unless heading_font.system? -%}
+  {{ heading_font | font_face: font_display: 'swap' }}
+  {%- if heading_bold -%}
+    {{ heading_bold | font_face: font_display: 'swap' }}
+  {%- endif -%}
+{%- endunless -%}
+{%- unless body_font.system? -%}
+  {{ body_font | font_face: font_display: 'swap' }}
+  {%- if body_bold -%}
+    {{ body_bold | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if body_italic -%}
+    {{ body_italic | font_face: font_display: 'swap' }}
+  {%- endif -%}
+{%- endunless -%}
+{{ 'base.css' | asset_url | stylesheet_tag }}
+{% style %}
+  :root {
+    --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --font-heading-weight: {{ heading_font.weight }};
+    --font-heading-style: {{ heading_font.style }};
+    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-body-weight: {{ body_font.weight }};
+    --font-body-style: {{ body_font.style }};
+    --citrus: {{ settings.accent_color }};
+    --page-width: {{ settings.page_width }}px;
+    --logo-width: {{ settings.logo_width }}px;
+  }
+  {%- for scheme in settings.color_schemes -%}
+    .color-{{ scheme.id }} {
+      --color-background: {{ scheme.settings.background }};
+      {%- if scheme.settings.background_gradient != blank -%}
+        --color-background-gradient: {{ scheme.settings.background_gradient }};
+      {%- else -%}
+        --color-background-gradient: {{ scheme.settings.background }};
+      {%- endif -%}
+      --color-text: {{ scheme.settings.text }};
+      --color-button: {{ scheme.settings.button }};
+      --color-button-label: {{ scheme.settings.button_label }};
+      --color-secondary: {{ scheme.settings.secondary_button_label }};
+      --color-shadow: {{ scheme.settings.shadow }};
+    }
+  {%- endfor -%}
+{% endstyle %}

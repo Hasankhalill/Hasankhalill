@@ -1,0 +1,32 @@
+{%- liquid
+  assign empty_title = 'missing.title' | t
+  assign empty_text = 'missing.text' | t
+  assign home_label = 'general.home' | t
+-%}
+<section class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width page-narrow">
+    {% render 'empty-state', title: empty_title, text: empty_text, link_url: routes.root_url, link_label: home_label %}
+    <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+      <div class="search-form__field">
+        <label for="SearchMissing">{{ 'search.label' | t }}</label>
+        <input id="SearchMissing" type="search" name="q" placeholder="{{ 'search.placeholder' | t }}">
+      </div>
+      <input type="hidden" name="options[prefix]" value="last">
+      <button class="button" type="submit">{{ 'search.submit' | t }}</button>
+    </form>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.missing.name",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

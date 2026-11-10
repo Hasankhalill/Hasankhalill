@@ -1,0 +1,35 @@
+<section class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width page-narrow">
+    <h1>{{ page.title }}</h1>
+    {%- if page.content != blank -%}
+      <div class="rte">{{ page.content }}</div>
+    {%- elsif section.settings.body != blank -%}
+      <div class="rte">{{ section.settings.body }}</div>
+    {%- else -%}
+      {%- assign empty_title = 'pages.empty_title' | t -%}
+      {%- assign empty_text = 'pages.empty_text' | t -%}
+      {% render 'empty-state', title: empty_title, text: empty_text %}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.page.name",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "t:sections.page.body",
+      "info": "t:sections.page.body_info"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-3"
+    }
+  ]
+}
+{% endschema %}

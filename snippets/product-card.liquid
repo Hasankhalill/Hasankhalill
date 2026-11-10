@@ -1,0 +1,56 @@
+{% doc %}
+Renders one product from the Shopify catalog. No placeholder product is invented when the image is missing.
+@param {product} product - Product to show
+@param {boolean} [eager] - Load the image immediately when it may be the largest element
+{% enddoc %}
+{%- liquid
+  assign card_variant = product.selected_or_first_available_variant
+  assign card_alt = product.featured_image.alt
+  if card_alt == blank
+    assign card_alt = product.title
+  endif
+-%}
+<article class="card">
+  <a class="card__link" href="{{ product.url }}">
+    <div class="card__media">
+      {%- if product.featured_image -%}
+        {%- if eager -%}
+          {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '180, 360, 540, 720', sizes: '(min-width: 1100px) 25vw, (min-width: 700px) 33vw, 50vw', alt: card_alt }}
+        {%- else -%}
+          {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '180, 360, 540, 720', sizes: '(min-width: 1100px) 25vw, (min-width: 700px) 33vw, 50vw', alt: card_alt }}
+        {%- endif -%}
+      {%- else -%}
+        <span class="card__art" aria-hidden="true">{% render 'icon', name: 'crate' %}</span>
+      {%- endif -%}
+      {%- unless product.available -%}
+        <span class="badge">{{ 'products.sold_out' | t }}</span>
+      {%- endunless -%}
+    </div>
+    <div class="card__body">
+      {%- if settings.show_vendor and product.vendor != blank -%}
+        <p class="eyebrow">{{ product.vendor }}</p>
+      {%- endif -%}
+      <h3 class="card__title">{{ product.title }}</h3>
+      <p class="price">
+        {%- if product.price_varies -%}
+          {%- assign money_min = product.price_min | money -%}
+          <span>{{ 'products.from_price' | t: price: money_min }}</span>
+        {%- else -%}
+          <span>{{ card_variant.price | money }}</span>
+        {%- endif -%}
+        {%- if card_variant.compare_at_price > card_variant.price -%}
+          <s>{{ card_variant.compare_at_price | money }}</s>
+        {%- endif -%}
+      </p>
+      {%- if card_variant.unit_price_measurement -%}
+        <p class="unit-price">
+          {{ card_variant.unit_price | money }} /
+          {%- if card_variant.unit_price_measurement.reference_value != 1 -%}
+            {{ card_variant.unit_price_measurement.reference_value }}
+          {%- endif %}
+          {{ card_variant.unit_price_measurement.reference_unit }}
+        </p>
+      {%- endif -%}
+    </div>
+  </a>
+</article>

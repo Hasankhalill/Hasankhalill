@@ -1,0 +1,147 @@
+{%- liquid
+  assign nav_menu = section.settings.menu
+  assign nav_count = 0
+  if nav_menu != blank
+    assign nav_count = nav_menu.links.size
+  endif
+  assign brand_label = settings.brand_name
+  if brand_label == blank
+    assign brand_label = shop.name
+  endif
+-%}
+<header class="site-header color-{{ section.settings.color_scheme }}{% if section.settings.sticky %} site-header--sticky{% endif %}" data-header {{ section.shopify_attributes }}>
+  <div class="site-header__bar">
+    <button class="menu-toggle" type="button" data-menu-toggle aria-controls="SiteNav-{{ section.id }}" aria-expanded="false">
+      {% render 'icon', name: 'menu' %}
+      <span class="visually-hidden">{{ 'header.open_menu' | t }}</span>
+    </button>
+    <a class="wordmark" href="{{ routes.root_url }}">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 400 | image_tag: loading: 'eager', widths: '120, 200, 320, 400', sizes: '160px', alt: brand_label, class: 'wordmark__img' }}
+      {%- else -%}
+        <span class="wordmark__mark" aria-hidden="true">{% render 'icon', name: 'mark' %}</span>
+        <span>{% render 'brand-name' %}</span>
+      {%- endif -%}
+    </a>
+    <div class="site-header__search">
+      <predictive-search class="predictive" data-predictive-url="{{ routes.predictive_search_url }}">
+        <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+          <div class="search-form__field">
+            <label class="visually-hidden" for="Search-{{ section.id }}">{{ 'search.label' | t }}</label>
+            <input
+              id="Search-{{ section.id }}"
+              type="search"
+              name="q"
+              role="combobox"
+              aria-expanded="false"
+              aria-controls="Predictive-{{ section.id }}"
+              aria-autocomplete="list"
+              autocomplete="off"
+              placeholder="{{ 'search.placeholder' | t }}"
+            >
+          </div>
+          <input type="hidden" name="options[prefix]" value="last">
+          <button class="button" type="submit">{{ 'search.submit' | t }}</button>
+          <div id="Predictive-{{ section.id }}" class="predictive__results" hidden></div>
+        </form>
+      </predictive-search>
+    </div>
+    <div class="site-header__tools">
+      {%- if customer -%}
+        <a class="tool-link" href="{{ routes.account_url }}">
+          {% render 'icon', name: 'account' %}
+          <span class="visually-hidden">{{ 'header.account' | t }}</span>
+        </a>
+      {%- else -%}
+        <a class="tool-link" href="{{ routes.account_login_url }}">
+          {% render 'icon', name: 'account' %}
+          <span class="visually-hidden">{{ 'header.log_in' | t }}</span>
+        </a>
+      {%- endif -%}
+      <a class="tool-link" href="{{ routes.cart_url }}" data-cart-link aria-label="{{ 'header.cart_label' | t: count: cart.item_count }}">
+        {% render 'icon', name: 'cart' %}
+        <span class="cart-count" data-cart-count aria-hidden="true">{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+  <nav id="SiteNav-{{ section.id }}" class="site-nav dept-section dept-section--navigation" data-nav aria-label="{{ 'header.departments' | t }}">
+    <button class="nav-close" type="button" data-menu-close>
+      {% render 'icon', name: 'close' %}
+      <span>{{ 'header.close_menu' | t }}</span>
+    </button>
+    {%- if nav_count > 0 -%}
+      <div class="dept-list" role="list">
+        {%- for link in nav_menu.links -%}
+          {%- liquid
+            assign link_handle = link.url | split: '?' | first | split: '/' | last
+            assign icon_name = 'basket'
+            for block in section.blocks
+              if block.type == '_department' and block.settings.handle == link_handle
+                assign icon_name = block.settings.icon
+              endif
+            endfor
+          -%}
+          <div class="dept" role="listitem">
+            <div class="dept__head">
+              <a class="dept__title" href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>
+                <span class="dept__mark" aria-hidden="true">{% render 'icon', name: icon_name %}</span>
+                <span>{{ link.title }}</span>
+              </a>
+              {%- if link.links.size > 0 -%}
+                <button class="dept__toggle" type="button" aria-expanded="false" aria-controls="MenuDept-{{ section.id }}-{{ forloop.index }}">
+                  <span class="visually-hidden">{{ 'departments.show' | t: title: link.title }}</span>
+                  {% render 'icon', name: 'chevron' %}
+                </button>
+              {%- endif -%}
+            </div>
+            {%- if link.links.size > 0 -%}
+              <div class="dept__children" id="MenuDept-{{ section.id }}-{{ forloop.index }}" role="list">
+                {%- for child in link.links -%}
+                  {%- assign child_handle = child.url | split: '?' | first | split: '/' | last -%}
+                  <a class="aisle-link{% if child_handle == 'sports-nutrition' %} aisle-link--distinct{% endif %}" role="listitem" href="{{ child.url }}" {% if child.current %}aria-current="page"{% endif %}>
+                    {%- if child_handle == 'sports-nutrition' -%}
+                      <span class="aisle-link__flag">{{ 'departments.distinct' | t }}</span>
+                    {%- endif -%}
+                    <span>{{ child.title }}</span>
+                  </a>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <div class="dept-fallback" role="list" {% if nav_count > 0 %}hidden{% endif %}>
+      {% content_for 'blocks' %}
+    </div>
+  </nav>
+</header>
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "enabled_on": { "groups": ["header"] },
+  "blocks": [{ "type": "_department" }],
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:sections.header.menu",
+      "info": "t:sections.header.menu_info",
+      "default": "departments"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "t:sections.header.sticky",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-2"
+    }
+  ]
+}
+{% endschema %}

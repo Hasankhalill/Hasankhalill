@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "menu": "departments"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

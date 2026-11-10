@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "menu": "departments"
+      }
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "More from this aisle"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related"
+  ]
+}

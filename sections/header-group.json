@@ -1,0 +1,762 @@
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "text": "Browse every department. Prices and stock come from your Shopify catalog."
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "departments",
+        "sticky": true,
+        "color_scheme": "scheme-2"
+      },
+      "blocks": {
+        "cleaning": {
+          "type": "_department",
+          "settings": {
+            "title": "Cleaning & Household",
+            "handle": "cleaning-household",
+            "icon": "cleaning"
+          },
+          "blocks": {
+            "cleaning_floor_cleaners": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Floor cleaners",
+                "handle": "floor-cleaners",
+                "distinct": false
+              }
+            },
+            "cleaning_surface_cleaners": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Surface cleaners",
+                "handle": "surface-cleaners",
+                "distinct": false
+              }
+            },
+            "cleaning_disinfectants": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Disinfectants",
+                "handle": "disinfectants",
+                "distinct": false
+              }
+            },
+            "cleaning_dishwashing": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Dishwashing",
+                "handle": "dishwashing",
+                "distinct": false
+              }
+            },
+            "cleaning_laundry_detergent": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Laundry detergent",
+                "handle": "laundry-detergent",
+                "distinct": false
+              }
+            },
+            "cleaning_cleaning_tools": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Cleaning tools",
+                "handle": "cleaning-tools",
+                "distinct": false
+              }
+            },
+            "cleaning_garbage_bags": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Garbage bags",
+                "handle": "garbage-bags",
+                "distinct": false
+              }
+            },
+            "cleaning_paper_products": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Paper products",
+                "handle": "paper-products",
+                "distinct": false
+              }
+            }
+          },
+          "block_order": [
+            "cleaning_floor_cleaners",
+            "cleaning_surface_cleaners",
+            "cleaning_disinfectants",
+            "cleaning_dishwashing",
+            "cleaning_laundry_detergent",
+            "cleaning_cleaning_tools",
+            "cleaning_garbage_bags",
+            "cleaning_paper_products"
+          ]
+        },
+        "personal": {
+          "type": "_department",
+          "settings": {
+            "title": "Personal Care & Hygiene",
+            "handle": "personal-care",
+            "icon": "care"
+          },
+          "blocks": {
+            "personal_hand_wash": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Hand wash",
+                "handle": "hand-wash",
+                "distinct": false
+              }
+            },
+            "personal_soap": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Soap",
+                "handle": "soap",
+                "distinct": false
+              }
+            },
+            "personal_shower_gel": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Shower gel",
+                "handle": "shower-gel",
+                "distinct": false
+              }
+            },
+            "personal_shampoo": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Shampoo",
+                "handle": "shampoo",
+                "distinct": false
+              }
+            },
+            "personal_oral_care": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Oral care",
+                "handle": "oral-care",
+                "distinct": false
+              }
+            },
+            "personal_deodorants": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Deodorants",
+                "handle": "deodorants",
+                "distinct": false
+              }
+            },
+            "personal_tissues": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Tissues",
+                "handle": "tissues",
+                "distinct": false
+              }
+            }
+          },
+          "block_order": [
+            "personal_hand_wash",
+            "personal_soap",
+            "personal_shower_gel",
+            "personal_shampoo",
+            "personal_oral_care",
+            "personal_deodorants",
+            "personal_tissues"
+          ]
+        },
+        "pantry": {
+          "type": "_department",
+          "settings": {
+            "title": "Food & Pantry",
+            "handle": "food-pantry",
+            "icon": "pantry"
+          },
+          "blocks": {
+            "pantry_rice": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Rice",
+                "handle": "rice",
+                "distinct": false
+              }
+            },
+            "pantry_pasta": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Pasta",
+                "handle": "pasta",
+                "distinct": false
+              }
+            },
+            "pantry_grains": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Grains",
+                "handle": "grains",
+                "distinct": false
+              }
+            },
+            "pantry_flour": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Flour",
+                "handle": "flour",
+                "distinct": false
+              }
+            },
+            "pantry_cooking_oils": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Cooking oils",
+                "handle": "cooking-oils",
+                "distinct": false
+              }
+            },
+            "pantry_canned_foods": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Canned foods",
+                "handle": "canned-foods",
+                "distinct": false
+              }
+            },
+            "pantry_soups": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Soups",
+                "handle": "soups",
+                "distinct": false
+              }
+            },
+            "pantry_sauces": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Sauces",
+                "handle": "sauces",
+                "distinct": false
+              }
+            },
+            "pantry_spices": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Spices",
+                "handle": "spices",
+                "distinct": false
+              }
+            },
+            "pantry_spreads": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Spreads",
+                "handle": "spreads",
+                "distinct": false
+              }
+            }
+          },
+          "block_order": [
+            "pantry_rice",
+            "pantry_pasta",
+            "pantry_grains",
+            "pantry_flour",
+            "pantry_cooking_oils",
+            "pantry_canned_foods",
+            "pantry_soups",
+            "pantry_sauces",
+            "pantry_spices",
+            "pantry_spreads"
+          ]
+        },
+        "bakery": {
+          "type": "_department",
+          "settings": {
+            "title": "Bread & Bakery",
+            "handle": "bread-bakery",
+            "icon": "bakery"
+          },
+          "blocks": {
+            "bakery_bread": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Bread",
+                "handle": "bread",
+                "distinct": false
+              }
+            },
+            "bakery_wraps": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Wraps",
+                "handle": "wraps",
+                "distinct": false
+              }
+            },
+            "bakery_toast": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Toast",
+                "handle": "toast",
+                "distinct": false
+              }
+            },
+            "bakery_pastries": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Pastries",
+                "handle": "pastries",
+                "distinct": false
+              }
+            },
+            "bakery_bakery": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Bakery",
+                "handle": "bakery",
+                "distinct": false
+              }
+            }
+          },
+          "block_order": [
+            "bakery_bread",
+            "bakery_wraps",
+            "bakery_toast",
+            "bakery_pastries",
+            "bakery_bakery"
+          ]
+        },
+        "snacks": {
+          "type": "_department",
+          "settings": {
+            "title": "Snacks & Sweets",
+            "handle": "snacks-sweets",
+            "icon": "snacks"
+          },
+          "blocks": {
+            "snacks_chips": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Chips",
+                "handle": "chips",
+                "distinct": false
+              }
+            },
+            "snacks_crackers": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Crackers",
+                "handle": "crackers",
+                "distinct": false
+              }
+            },
+            "snacks_biscuits": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Biscuits",
+                "handle": "biscuits",
+                "distinct": false
+              }
+            },
+            "snacks_chocolate": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Chocolate",
+                "handle": "chocolate",
+                "distinct": false
+              }
+            },
+            "snacks_candy": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Candy",
+                "handle": "candy",
+                "distinct": false
+              }
+            },
+            "snacks_nuts": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Nuts",
+                "handle": "nuts",
+                "distinct": false
+              }
+            },
+            "snacks_dried_fruit": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Dried fruit",
+                "handle": "dried-fruit",
+                "distinct": false
+              }
+            }
+          },
+          "block_order": [
+            "snacks_chips",
+            "snacks_crackers",
+            "snacks_biscuits",
+            "snacks_chocolate",
+            "snacks_candy",
+            "snacks_nuts",
+            "snacks_dried_fruit"
+          ]
+        },
+        "drinks": {
+          "type": "_department",
+          "settings": {
+            "title": "Drinks",
+            "handle": "drinks",
+            "icon": "drinks"
+          },
+          "blocks": {
+            "drinks_water": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Water",
+                "handle": "water",
+                "distinct": false
+              }
+            },
+            "drinks_juices": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Juices",
+                "handle": "juices",
+                "distinct": false
+              }
+            },
+            "drinks_soft_drinks": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Soft drinks",
+                "handle": "soft-drinks",
+                "distinct": false
+              }
+            },
+            "drinks_energy_drinks": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Energy drinks",
+                "handle": "energy-drinks",
+                "distinct": false
+              }
+            },
+            "drinks_coffee": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Coffee",
+                "handle": "coffee",
+                "distinct": false
+              }
+            },
+            "drinks_tea": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Tea",
+                "handle": "tea",
+                "distinct": false
+              }
+            }
+          },
+          "block_order": [
+            "drinks_water",
+            "drinks_juices",
+            "drinks_soft_drinks",
+            "drinks_energy_drinks",
+            "drinks_coffee",
+            "drinks_tea"
+          ]
+        },
+        "protein": {
+          "type": "_department",
+          "settings": {
+            "title": "Protein Foods",
+            "handle": "protein-foods",
+            "icon": "protein"
+          },
+          "blocks": {
+            "protein_meat": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Meat",
+                "handle": "meat",
+                "distinct": false
+              }
+            },
+            "protein_chicken": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Chicken",
+                "handle": "chicken",
+                "distinct": false
+              }
+            },
+            "protein_fish": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Fish",
+                "handle": "fish",
+                "distinct": false
+              }
+            },
+            "protein_seafood": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Seafood",
+                "handle": "seafood",
+                "distinct": false
+              }
+            },
+            "protein_eggs": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Eggs",
+                "handle": "eggs",
+                "distinct": false
+              }
+            },
+            "protein_plant_based_proteins": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Plant-based proteins",
+                "handle": "plant-based-proteins",
+                "distinct": false
+              }
+            },
+            "protein_sports_nutrition": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Sports nutrition",
+                "handle": "sports-nutrition",
+                "distinct": true
+              }
+            }
+          },
+          "block_order": [
+            "protein_meat",
+            "protein_chicken",
+            "protein_fish",
+            "protein_seafood",
+            "protein_eggs",
+            "protein_plant_based_proteins",
+            "protein_sports_nutrition"
+          ]
+        },
+        "dairy": {
+          "type": "_department",
+          "settings": {
+            "title": "Dairy & Chilled",
+            "handle": "dairy-chilled",
+            "icon": "dairy"
+          },
+          "blocks": {
+            "dairy_milk": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Milk",
+                "handle": "milk",
+                "distinct": false
+              }
+            },
+            "dairy_cheese": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Cheese",
+                "handle": "cheese",
+                "distinct": false
+              }
+            },
+            "dairy_yogurt": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Yogurt",
+                "handle": "yogurt",
+                "distinct": false
+              }
+            },
+            "dairy_butter": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Butter",
+                "handle": "butter",
+                "distinct": false
+              }
+            },
+            "dairy_chilled_foods": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Chilled foods",
+                "handle": "chilled-foods",
+                "distinct": false
+              }
+            }
+          },
+          "block_order": [
+            "dairy_milk",
+            "dairy_cheese",
+            "dairy_yogurt",
+            "dairy_butter",
+            "dairy_chilled_foods"
+          ]
+        },
+        "produce": {
+          "type": "_department",
+          "settings": {
+            "title": "Fruit & Vegetables",
+            "handle": "fruit-vegetables",
+            "icon": "produce"
+          },
+          "blocks": {
+            "produce_fresh_fruit": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Fresh fruit",
+                "handle": "fresh-fruit",
+                "distinct": false
+              }
+            },
+            "produce_vegetables": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Vegetables",
+                "handle": "vegetables",
+                "distinct": false
+              }
+            },
+            "produce_herbs": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Herbs",
+                "handle": "herbs",
+                "distinct": false
+              }
+            }
+          },
+          "block_order": [
+            "produce_fresh_fruit",
+            "produce_vegetables",
+            "produce_herbs"
+          ]
+        },
+        "frozen": {
+          "type": "_department",
+          "settings": {
+            "title": "Frozen Foods",
+            "handle": "frozen-foods",
+            "icon": "frozen"
+          },
+          "blocks": {
+            "frozen_frozen_vegetables": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Frozen vegetables",
+                "handle": "frozen-vegetables",
+                "distinct": false
+              }
+            },
+            "frozen_frozen_meals": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Frozen meals",
+                "handle": "frozen-meals",
+                "distinct": false
+              }
+            },
+            "frozen_frozen_meat": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Frozen meat",
+                "handle": "frozen-meat",
+                "distinct": false
+              }
+            },
+            "frozen_ice_cream": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Ice cream",
+                "handle": "ice-cream",
+                "distinct": false
+              }
+            }
+          },
+          "block_order": [
+            "frozen_frozen_vegetables",
+            "frozen_frozen_meals",
+            "frozen_frozen_meat",
+            "frozen_ice_cream"
+          ]
+        },
+        "family": {
+          "type": "_department",
+          "settings": {
+            "title": "Baby, Pet & Essentials",
+            "handle": "family-essentials",
+            "icon": "family"
+          },
+          "blocks": {
+            "family_baby_care": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Baby care",
+                "handle": "baby-care",
+                "distinct": false
+              }
+            },
+            "family_pet_care": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Pet care",
+                "handle": "pet-care",
+                "distinct": false
+              }
+            },
+            "family_other_essentials": {
+              "type": "_aisle-link",
+              "settings": {
+                "title": "Other essentials",
+                "handle": "other-essentials",
+                "distinct": false
+              }
+            }
+          },
+          "block_order": [
+            "family_baby_care",
+            "family_pet_care",
+            "family_other_essentials"
+          ]
+        }
+      },
+      "block_order": [
+        "cleaning",
+        "personal",
+        "pantry",
+        "bakery",
+        "snacks",
+        "drinks",
+        "protein",
+        "dairy",
+        "produce",
+        "frozen",
+        "family"
+      ]
+    },
+    "cart-drawer": {
+      "type": "cart-drawer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "announcement",
+    "header",
+    "cart-drawer"
+  ]
+}

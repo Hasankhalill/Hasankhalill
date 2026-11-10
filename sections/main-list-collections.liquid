@@ -1,0 +1,52 @@
+{%- assign home_label = 'general.home' | t -%}
+<section class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    <h1>{{ 'collections.list_title' | t }}</h1>
+    {% paginate collections by 24 %}
+      {%- if collections.size == 0 -%}
+        {%- assign empty_title = 'collections.list_empty_title' | t -%}
+        {%- assign empty_text = 'collections.list_empty_text' | t -%}
+        {% render 'empty-state', title: empty_title, text: empty_text, link_url: routes.root_url, link_label: home_label %}
+      {%- else -%}
+        <ul class="product-grid">
+          {%- for collection in collections -%}
+            <li>
+              <article class="card">
+                <a class="card__link" href="{{ collection.url }}">
+                  <div class="card__media">
+                    {%- if collection.image -%}
+                      {%- assign collection_alt = collection.image.alt | default: collection.title -%}
+                      {{ collection.image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '240, 480, 700', sizes: '(min-width: 700px) 30vw, 50vw', alt: collection_alt }}
+                    {%- else -%}
+                      <span class="card__art" aria-hidden="true">{% render 'icon', name: 'basket' %}</span>
+                    {%- endif -%}
+                  </div>
+                  <div class="card__body">
+                    <h2 class="card__title">{{ collection.title }}</h2>
+                    <p>{{ 'collections.product_count' | t: count: collection.products_count }}</p>
+                  </div>
+                </a>
+              </article>
+            </li>
+          {%- endfor -%}
+        </ul>
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.list.name",
+  "enabled_on": { "templates": ["list-collections"] },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}
