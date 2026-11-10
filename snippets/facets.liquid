@@ -1,0 +1,172 @@
+{% doc %}
+Renders sorting and storefront filters for a collection or search page.
+@param filters - Active filter objects. Empty when Search & Discovery filters are off.
+@param sort_options - Sort options from the collection or search object
+@param {string} sort_by - Selected sort value
+@param {string} action_url - Form destination
+@param {string} id_prefix - Unique prefix for input ids
+@param {string} [search_terms] - Search query to keep when filters are applied
+{% enddoc %}
+<form class="facets" action="{{ action_url }}" method="get">
+  <h2 class="visually-hidden">{{ 'collections.filters' | t }}</h2>
+  {%- if search_terms != blank -%}
+    <input type="hidden" name="q" value="{{ search_terms | escape }}">
+    <input type="hidden" name="options[prefix]" value="last">
+  {%- endif -%}
+  <div class="facets__bar">
+    {%- if sort_options != blank and sort_options.size > 0 -%}
+      <div class="facets__sort">
+        <label for="Sort-{{ id_prefix }}">{{ 'collections.sort' | t }}</label>
+        <select id="Sort-{{ id_prefix }}" name="sort_by">
+          {%- for option in sort_options -%}
+            <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name }}</option>
+          {%- endfor -%}
+        </select>
+      </div>
+    {%- endif -%}
+    <button class="button button--secondary" type="submit">{{ 'collections.apply' | t }}</button>
+  </div>
+  {%- if filters != blank and filters.size > 0 -%}
+    <div class="facets__groups">
+      {%- for filter in filters -%}
+        <details class="facets__group" {% if filter.active_values.size > 0 or filter.min_value.value != nil or filter.max_value.value != nil %}open{% endif %}>
+          <summary>
+            {{ filter.label }}
+            {%- if filter.active_values.size > 0 -%}
+              <span>({{ filter.active_values.size }})</span>
+            {%- endif -%}
+          </summary>
+          <div class="facets__body">
+            {%- case filter.type -%}
+              {%- when 'boolean' -%}
+                <ul>
+                  {%- if filter.true_value -%}
+                    <li>
+                      <label for="Filter-{{ id_prefix }}-{{ forloop.index }}-true">
+                        <input
+                          type="checkbox"
+                          name="{{ filter.param_name }}"
+                          value="{{ filter.true_value.value }}"
+                          id="Filter-{{ id_prefix }}-{{ forloop.index }}-true"
+                          {% if filter.true_value.active %}checked{% endif %}
+                          {% if filter.true_value.count == 0 and filter.true_value.active == false %}disabled{% endif %}
+                        >
+                        {{ filter.true_value.label }}
+                      </label>
+                    </li>
+                  {%- endif -%}
+                  {%- if filter.false_value -%}
+                    <li>
+                      <label for="Filter-{{ id_prefix }}-{{ forloop.index }}-false">
+                        <input
+                          type="checkbox"
+                          name="{{ filter.param_name }}"
+                          value="{{ filter.false_value.value }}"
+                          id="Filter-{{ id_prefix }}-{{ forloop.index }}-false"
+                          {% if filter.false_value.active %}checked{% endif %}
+                          {% if filter.false_value.count == 0 and filter.false_value.active == false %}disabled{% endif %}
+                        >
+                        {{ filter.false_value.label }}
+                      </label>
+                    </li>
+                  {%- endif -%}
+                </ul>
+              {%- when 'list' -%}
+                <ul>
+                  {%- for filter_value in filter.values -%}
+                    <li>
+                      <label for="Filter-{{ id_prefix }}-{{ forloop.parentloop.index }}-{{ forloop.index }}">
+                        <input
+                          type="checkbox"
+                          name="{{ filter_value.param_name }}"
+                          value="{{ filter_value.value }}"
+                          id="Filter-{{ id_prefix }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+                          {% if filter_value.active %}checked{% endif %}
+                          {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}
+                        >
+                        {%- if filter.presentation == 'swatch' and filter_value.swatch.image -%}
+                          {{ filter_value.swatch.image | image_url: width: 32 | image_tag: alt: '', loading: 'lazy' }}
+                        {%- elsif filter.presentation == 'swatch' and filter_value.swatch.color -%}
+                          <span class="swatch" style="background: {{ filter_value.swatch.color }};"></span>
+                        {%- elsif filter.presentation == 'image' and filter_value.image -%}
+                          {{ filter_value.image | image_url: width: 32 | image_tag: alt: '', loading: 'lazy' }}
+                        {%- endif -%}
+                        <span>{{ filter_value.label }}</span>
+                        {%- if filter_value.count != nil -%}
+                          <span class="facets__count">{{ filter_value.count }}</span>
+                        {%- endif -%}
+                      </label>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- when 'price_range' -%}
+                <div class="facets__price">
+                  <div>
+                    <label for="Filter-{{ id_prefix }}-{{ forloop.index }}-min">{{ 'collections.price_from' | t }}</label>
+                    <input
+                      id="Filter-{{ id_prefix }}-{{ forloop.index }}-min"
+                      name="{{ filter.min_value.param_name }}"
+                      type="number"
+                      min="0"
+                      {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                      placeholder="0"
+                      max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    >
+                  </div>
+                  <div>
+                    <label for="Filter-{{ id_prefix }}-{{ forloop.index }}-max">{{ 'collections.price_to' | t }}</label>
+                    <input
+                      id="Filter-{{ id_prefix }}-{{ forloop.index }}-max"
+                      name="{{ filter.max_value.param_name }}"
+                      type="number"
+                      min="0"
+                      {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                      placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    >
+                  </div>
+                </div>
+            {%- endcase -%}
+            {%- if filter.active_values.size > 0 or filter.min_value.value != nil or filter.max_value.value != nil -%}
+              <a class="facets__reset" href="{{ filter.url_to_remove }}">{{ 'collections.reset' | t }}</a>
+            {%- endif -%}
+          </div>
+        </details>
+      {%- endfor -%}
+    </div>
+    {%- liquid
+      assign filters_active = false
+      for filter in filters
+        if filter.type == 'price_range'
+          if filter.min_value.value != nil or filter.max_value.value != nil
+            assign filters_active = true
+          endif
+        elsif filter.active_values.size > 0
+          assign filters_active = true
+        endif
+      endfor
+    -%}
+    {%- if filters_active -%}
+      <div class="facets__active">
+        {%- if search_terms != blank -%}
+          <a href="{{ action_url }}?q={{ search_terms | url_encode }}&sort_by={{ sort_by | url_encode }}">{{ 'collections.clear' | t }}</a>
+        {%- else -%}
+          <a href="{{ action_url }}{% if sort_by != blank %}?sort_by={{ sort_by | url_encode }}{% endif %}">{{ 'collections.clear' | t }}</a>
+        {%- endif -%}
+        {%- for filter in filters -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+              {%- assign min_value = filter.min_value.value | default: 0 -%}
+              {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
+              <a href="{{ filter.url_to_remove }}">{{ min_value | money }} – {{ max_value | money }}</a>
+            {%- endif -%}
+          {%- else -%}
+            {%- for filter_value in filter.active_values -%}
+              <a href="{{ filter_value.url_to_remove }}">{{ filter.label }}: {{ filter_value.label }}</a>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</form>

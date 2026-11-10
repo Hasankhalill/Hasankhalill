@@ -1,0 +1,22 @@
+<dialog class="cart-drawer" data-cart-drawer aria-label="{{ 'cart.title' | t }}">
+  <div class="cart-drawer__inner">
+    <div class="cart-drawer__head">
+      <h2>{{ 'cart.title' | t }}</h2>
+      <form method="dialog">
+        <button class="button button--secondary" type="submit">{{ 'general.close' | t }}</button>
+      </form>
+    </div>
+    {% render 'cart-form', section_id: section.id, show_note: false %}
+    {%- if cart.item_count > 0 -%}
+      <p><a href="{{ routes.cart_url }}">{{ 'cart.view' | t }}</a></p>
+    {%- endif -%}
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "t:sections.drawer.name",
+  "enabled_on": { "groups": ["header"] },
+  "settings": []
+}
+{% endschema %}

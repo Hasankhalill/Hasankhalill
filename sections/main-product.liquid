@@ -1,0 +1,125 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_media = current_variant.featured_media | default: product.featured_media
+  assign added_message = 'products.added' | t
+  assign error_message = 'products.add_error' | t
+  assign add_label = 'products.add_to_cart' | t
+  assign sold_label = 'products.sold_out' | t
+-%}
+{%- capture product_form_id -%}ProductForm-{{ section.id }}{%- endcapture -%}
+<section class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width product">
+    <div class="gallery" data-gallery>
+      {% render 'breadcrumbs', current_title: product.title, menu: section.settings.menu, product: product %}
+      <div class="gallery__stage" data-gallery-stage>
+        {%- if featured_media -%}
+          {% render 'media', media: featured_media, eager: true %}
+        {%- elsif product.media.size > 0 -%}
+          {% render 'media', media: product.media.first, eager: true %}
+        {%- else -%}
+          <div class="card__media">
+            <span class="card__art" aria-hidden="true">{% render 'icon', name: 'crate' %}</span>
+          </div>
+        {%- endif -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+        <details class="gallery__more">
+          <summary>{{ 'products.more_media' | t }}</summary>
+          {%- for media in product.media offset: 1 -%}
+            <div>{% render 'media', media: media, eager: false %}</div>
+          {%- endfor -%}
+        </details>
+      {%- endif -%}
+    </div>
+    <div>
+      {%- if settings.show_vendor and product.vendor != blank -%}
+        <p class="eyebrow">{{ product.vendor }}</p>
+      {%- endif -%}
+      <h1>{{ product.title }}</h1>
+      <p class="price">
+        <span data-product-price>{{ current_variant.price | money }}</span>
+        <s data-product-compare {% unless current_variant.compare_at_price > current_variant.price %}hidden{% endunless %}>
+          {%- if current_variant.compare_at_price > current_variant.price -%}{{ current_variant.compare_at_price | money }}{%- endif -%}
+        </s>
+      </p>
+      {%- if current_variant.unit_price_measurement -%}
+        <p class="unit-price">
+          {{ 'products.unit_price' | t }}
+          {{ current_variant.unit_price | money }} /
+          {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+            {{ current_variant.unit_price_measurement.reference_value }}
+          {%- endif %}
+          {{ current_variant.unit_price_measurement.reference_unit }}
+        </p>
+      {%- endif -%}
+      {%- if current_variant.sku != blank -%}
+        <p>{{ 'products.sku' | t }} {{ current_variant.sku }}</p>
+      {%- endif -%}
+      {% form 'product', product, id: product_form_id, class: 'product-form', data-product-form: 'true', data-added: added_message, data-error: error_message %}
+        {%- unless product.has_only_default_variant -%}
+          <label for="Variant-{{ section.id }}">{{ 'products.variant' | t }}</label>
+          <select id="Variant-{{ section.id }}" name="id" data-variant-select>
+            {%- for variant in product.variants -%}
+              <option
+                value="{{ variant.id }}"
+                {% if variant.id == current_variant.id %}selected{% endif %}
+                data-price="{{ variant.price | money | escape }}"
+                data-compare="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | escape }}{% endif %}"
+                data-available="{{ variant.available }}"
+                data-image="{% if variant.featured_image %}{{ variant.featured_image | image_url: width: 1200 }}{% endif %}"
+              >
+                {{ variant.title }}
+              </option>
+            {%- endfor -%}
+          </select>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {%- endunless -%}
+        <div class="qty">
+          <label class="visually-hidden" for="Quantity-{{ section.id }}">{{ 'products.quantity' | t }}</label>
+          <button type="button" data-qty="-1" aria-label="{{ 'cart.decrease' | t }}">−</button>
+          <input id="Quantity-{{ section.id }}" type="number" name="quantity" value="1" min="1" inputmode="numeric">
+          <button type="button" data-qty="1" aria-label="{{ 'cart.increase' | t }}">+</button>
+        </div>
+        <p class="form-status" role="status" data-product-status></p>
+        <button
+          class="button"
+          type="submit"
+          name="add"
+          data-add-button
+          data-add-label="{{ add_label }}"
+          data-sold-label="{{ sold_label }}"
+          {% unless current_variant.available %}disabled{% endunless %}
+        >
+          {%- if current_variant.available -%}{{ add_label }}{%- else -%}{{ sold_label }}{%- endif -%}
+        </button>
+        {{ form | payment_button }}
+      {% endform %}
+      {%- if product.description != blank -%}
+        <h2>{{ 'products.description' | t }}</h2>
+        <div class="rte">{{ product.description }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.product.name",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:sections.collection.menu",
+      "default": "departments"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-3"
+    }
+  ]
+}
+{% endschema %}

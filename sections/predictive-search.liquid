@@ -1,0 +1,74 @@
+{%- if predictive_search.performed -%}
+  <div id="predictive-search-results">
+    {%- liquid
+      assign any_results = false
+      if predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 or predictive_search.resources.products.size > 0 or predictive_search.resources.pages.size > 0 or predictive_search.resources.articles.size > 0
+        assign any_results = true
+      endif
+    -%}
+    {%- if predictive_search.resources.queries.size > 0 -%}
+      <h3 id="predictive-queries">{{ 'search.suggestions' | t }}</h3>
+      <ul role="listbox" aria-labelledby="predictive-queries">
+        {%- for query in predictive_search.resources.queries -%}
+          <li role="option"><a href="{{ query.url }}">{{ query.styled_text }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if predictive_search.resources.collections.size > 0 -%}
+      <h3 id="predictive-collections">{{ 'search.collections' | t }}</h3>
+      <ul role="listbox" aria-labelledby="predictive-collections">
+        {%- for collection in predictive_search.resources.collections -%}
+          <li role="option"><a href="{{ collection.url }}">{{ collection.title | highlight: predictive_search.terms }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if predictive_search.resources.products.size > 0 -%}
+      <h3 id="predictive-products">{{ 'search.products' | t }}</h3>
+      <ul role="listbox" aria-labelledby="predictive-products">
+        {%- for product in predictive_search.resources.products -%}
+          <li role="option">
+            <a href="{{ product.url }}">
+              {%- if product.featured_media -%}
+                {{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', alt: product.title }}
+              {%- endif -%}
+              <span>
+                {{ product.title | highlight: predictive_search.terms }}
+                <br>
+                {{ product.price | money }}
+              </span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if predictive_search.resources.pages.size > 0 -%}
+      <h3 id="predictive-pages">{{ 'search.pages' | t }}</h3>
+      <ul role="listbox" aria-labelledby="predictive-pages">
+        {%- for page in predictive_search.resources.pages -%}
+          <li role="option"><a href="{{ page.url }}">{{ page.title | highlight: predictive_search.terms }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if predictive_search.resources.articles.size > 0 -%}
+      <h3 id="predictive-articles">{{ 'search.articles' | t }}</h3>
+      <ul role="listbox" aria-labelledby="predictive-articles">
+        {%- for article in predictive_search.resources.articles -%}
+          <li role="option"><a href="{{ article.url }}">{{ article.title | highlight: predictive_search.terms }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- unless any_results -%}
+      <p>{{ 'search.no_suggestions' | t }}</p>
+    {%- endunless -%}
+    <a href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&options%5Bprefix%5D=last">
+      {{ 'search.view_all' | t: terms: predictive_search.terms }}
+    </a>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.predictive.name",
+  "settings": []
+}
+{% endschema %}

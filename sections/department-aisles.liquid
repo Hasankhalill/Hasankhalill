@@ -1,0 +1,50 @@
+<section class="band dept-section dept-section--aisles color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="section-intro">
+        <h2>{{ section.settings.heading }}</h2>
+        {%- if section.settings.intro != blank -%}
+          <p>{{ section.settings.intro }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="aisle-grid">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.aisles.name",
+  "enabled_on": { "templates": ["index"] },
+  "blocks": [{ "type": "_department" }],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Departments"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "t:sections.aisles.intro",
+      "default": "Cleaning sits beside personal care. Reorder these blocks, or the Departments menu, without changing code."
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.aisles.help"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    { "name": "t:sections.aisles.name" }
+  ]
+}
+{% endschema %}

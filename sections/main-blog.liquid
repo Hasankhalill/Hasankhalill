@@ -1,0 +1,48 @@
+<section class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    <h1>{{ blog.title }}</h1>
+    {% paginate blog.articles by 12 %}
+      {%- if blog.articles.size == 0 -%}
+        {%- assign empty_title = 'blog.empty_title' | t -%}
+        {%- assign empty_text = 'blog.empty_text' | t -%}
+        {% render 'empty-state', title: empty_title, text: empty_text %}
+      {%- else -%}
+        <ul class="product-grid">
+          {%- for article in blog.articles -%}
+            <li>
+              <article class="card">
+                <a class="card__link" href="{{ article.url }}">
+                  {%- if article.image -%}
+                    <div class="card__media">
+                      {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300, 600, 800', sizes: '(min-width: 700px) 30vw, 100vw', alt: article.image.alt }}
+                    </div>
+                  {%- endif -%}
+                  <div class="card__body">
+                    <h2 class="card__title">{{ article.title }}</h2>
+                    <p>{{ article.excerpt_or_content | strip_html | truncate: 140 }}</p>
+                  </div>
+                </a>
+              </article>
+            </li>
+          {%- endfor -%}
+        </ul>
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.blog.name",
+  "enabled_on": { "templates": ["blog"] },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

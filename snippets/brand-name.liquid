@@ -1,0 +1,8 @@
+{% doc %}
+Outputs the supermarket name. A theme setting overrides the Shopify store name when it is filled in.
+{% enddoc %}
+{%- if settings.brand_name != blank -%}
+  {{- settings.brand_name | escape -}}
+{%- else -%}
+  {{- shop.name | escape -}}
+{%- endif -%}

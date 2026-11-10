@@ -1,0 +1,21 @@
+{% doc %}
+Renders one product media object.
+@param {media} media - Media to render
+@param {boolean} [eager] - Load an image immediately
+{% enddoc %}
+{%- case media.media_type -%}
+  {%- when 'image' -%}
+    {%- if eager -%}
+      {{ media | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400, 800, 1200, 1600', sizes: '(min-width: 990px) 48vw, 100vw', alt: media.alt }}
+    {%- else -%}
+      {{ media | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '400, 800, 1200, 1600', sizes: '(min-width: 990px) 48vw, 100vw', alt: media.alt }}
+    {%- endif -%}
+  {%- when 'video' -%}
+    {{ media | video_tag: controls: true, image_size: '800x' }}
+  {%- when 'external_video' -%}
+    {{ media | external_video_tag }}
+  {%- when 'model' -%}
+    {{ media | model_viewer_tag }}
+  {%- else -%}
+    {{ media | media_tag }}
+{%- endcase -%}

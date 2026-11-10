@@ -1,0 +1,17 @@
+{% doc %}
+Renders an empty state with an original crate illustration.
+@param {string} title - Heading
+@param {string} text - Supporting sentence
+@param {string} [link_url] - Optional destination
+@param {string} [link_label] - Optional link text
+{% enddoc %}
+<div class="empty">
+  <div class="empty__art" aria-hidden="true">
+    {% render 'icon', name: 'crate' %}
+  </div>
+  <h2 class="empty__title">{{ title }}</h2>
+  <p class="empty__text">{{ text }}</p>
+  {%- if link_url != blank and link_label != blank -%}
+    <a class="button" href="{{ link_url }}">{{ link_label }}</a>
+  {%- endif -%}
+</div>

@@ -1,0 +1,74 @@
+{%- liquid
+  assign current_sort = collection.sort_by | default: collection.default_sort_by
+  assign browse_label = 'general.home' | t
+-%}
+<section class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    {% render 'breadcrumbs', current_title: collection.title, menu: section.settings.menu, collection: collection %}
+    <header class="page-head">
+      <h1>{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </header>
+    {% render 'facets', filters: collection.filters, sort_options: collection.sort_options, sort_by: current_sort, action_url: collection.url, id_prefix: section.id %}
+    {% paginate collection.products by 16 %}
+      {%- liquid
+        assign filters_active = false
+        if collection.filters.size > 0
+          for filter in collection.filters
+            if filter.type == 'price_range'
+              if filter.min_value.value != nil or filter.max_value.value != nil
+                assign filters_active = true
+              endif
+            elsif filter.active_values.size > 0
+              assign filters_active = true
+            endif
+          endfor
+        endif
+      -%}
+      {%- if collection.products.size == 0 -%}
+        {%- if filters_active -%}
+          {%- assign empty_title = 'collections.no_matches_title' | t -%}
+          {%- assign empty_text = 'collections.no_matches_text' | t -%}
+          {%- assign clear_label = 'collections.clear' | t -%}
+          {% render 'empty-state', title: empty_title, text: empty_text, link_url: collection.url, link_label: clear_label %}
+        {%- else -%}
+          {%- assign empty_title = 'collections.empty_title' | t -%}
+          {%- assign empty_text = 'collections.empty_text' | t -%}
+          {% render 'empty-state', title: empty_title, text: empty_text, link_url: routes.root_url, link_label: browse_label %}
+        {%- endif -%}
+      {%- else -%}
+        <p>{{ 'collections.product_count' | t: count: collection.products_count }}</p>
+        <ul class="product-grid">
+          {%- for product in collection.products -%}
+            <li>{% render 'product-card', product: product, eager: forloop.first %}</li>
+          {%- endfor -%}
+        </ul>
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.collection.name",
+  "enabled_on": { "templates": ["collection"] },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:sections.collection.menu",
+      "info": "t:sections.collection.menu_info",
+      "default": "departments"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

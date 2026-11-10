@@ -1,0 +1,51 @@
+<section class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    <p><a href="{{ routes.account_url }}">{{ 'customers.account_title' | t }}</a></p>
+    <h1>{{ 'customers.order_name' | t: name: order.name }}</h1>
+    <p>{{ order.created_at | date: format: 'date' }}</p>
+    <table class="account-table">
+      <thead>
+        <tr>
+          <th>{{ 'search.products' | t }}</th>
+          <th>{{ 'products.quantity' | t }}</th>
+          <th>{{ 'cart.total' | t }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for line_item in order.line_items -%}
+          <tr>
+            <td>
+              <a href="{{ line_item.url }}">{{ line_item.title }}</a>
+              {%- unless line_item.variant.title == 'Default Title' -%}
+                <div>{{ line_item.variant.title }}</div>
+              {%- endunless -%}
+            </td>
+            <td>{{ line_item.quantity }}</td>
+            <td>{{ line_item.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+    <p>{{ 'cart.subtotal' | t }} {{ order.subtotal_price | money }}</p>
+    <p>{{ 'customers.shipping' | t }} {{ order.shipping_price | money }}</p>
+    <p>{{ 'customers.tax' | t }} {{ order.tax_price | money }}</p>
+    <p>{{ 'cart.total' | t }} {{ order.total_price | money }}</p>
+    {%- if order.shipping_address -%}
+      <h2>{{ 'customers.shipping_address' | t }}</h2>
+      {{ order.shipping_address | format_address }}
+    {%- endif -%}
+    {%- if order.billing_address -%}
+      <h2>{{ 'customers.billing_address' | t }}</h2>
+      {{ order.billing_address | format_address }}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.order.name",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:labels.scheme", "default": "scheme-1" }
+  ]
+}
+{% endschema %}

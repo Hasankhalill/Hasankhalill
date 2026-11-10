@@ -1,0 +1,76 @@
+{% doc %}
+Renders the live cart. An empty cart shows an empty state instead of invented products.
+@param {string} section_id - Section id used for form controls
+@param {boolean} [show_note] - Show the order note field
+{% enddoc %}
+{%- if cart.item_count == 0 -%}
+  {%- assign empty_title = 'cart.empty_title' | t -%}
+  {%- assign empty_text = 'cart.empty_text' | t -%}
+  {%- assign empty_label = 'cart.browse' | t -%}
+  {% render 'empty-state', title: empty_title, text: empty_text, link_url: routes.root_url, link_label: empty_label %}
+{%- else -%}
+  {%- capture cart_form_id -%}CartForm-{{ section_id }}{%- endcapture -%}
+  {% form 'cart', cart, id: cart_form_id %}
+    <ul class="cart-lines">
+      {%- for item in cart.items -%}
+        <li class="cart-line">
+          <a class="cart-line__media" href="{{ item.url }}">
+            {%- if item.image -%}
+              {{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120, 240', sizes: '96px', alt: item.title }}
+            {%- else -%}
+              <span class="card__art" aria-hidden="true">{% render 'icon', name: 'crate' %}</span>
+            {%- endif -%}
+          </a>
+          <div class="cart-line__info">
+            <a href="{{ item.url }}">{{ item.product.title }}</a>
+            {%- unless item.variant.title == 'Default Title' -%}
+              <p>{{ item.variant.title }}</p>
+            {%- endunless -%}
+            {%- if item.selling_plan_allocation -%}
+              <p>{{ item.selling_plan_allocation.selling_plan.name }}</p>
+            {%- endif -%}
+            {%- for property in item.properties -%}
+              {%- assign property_first = property.first | slice: 0 -%}
+              {%- if property.last != blank and property_first != '_' -%}
+                <p>{{ property.first }}: {{ property.last }}</p>
+              {%- endif -%}
+            {%- endfor -%}
+            <div class="qty">
+              <label class="visually-hidden" for="Updates-{{ section_id }}-{{ forloop.index }}">{{ 'cart.quantity' | t }}</label>
+              <button type="button" data-qty="-1" aria-label="{{ 'cart.decrease' | t }}">−</button>
+              <input id="Updates-{{ section_id }}-{{ forloop.index }}" type="number" name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric">
+              <button type="button" data-qty="1" aria-label="{{ 'cart.increase' | t }}">+</button>
+            </div>
+            <a href="{{ item.url_to_remove }}">{{ 'cart.remove' | t }}</a>
+          </div>
+          <div class="cart-line__price">
+            {%- if item.original_line_price > item.final_line_price -%}
+              <s>{{ item.original_line_price | money }}</s>
+            {%- endif -%}
+            <span>{{ item.final_line_price | money }}</span>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+    {%- if show_note -%}
+      <label for="CartNote-{{ section_id }}">{{ 'cart.note' | t }}</label>
+      <textarea id="CartNote-{{ section_id }}" name="note">{{ cart.note }}</textarea>
+    {%- endif -%}
+    <div class="cart-summary">
+      {%- if cart.cart_level_discount_applications.size > 0 -%}
+        <ul>
+          {%- for discount in cart.cart_level_discount_applications -%}
+            <li>{{ discount.title }} −{{ discount.total_allocated_amount | money }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <p class="cart-summary__total">
+        <span>{{ 'cart.subtotal' | t }}</span>
+        <span>{{ cart.total_price | money }}</span>
+      </p>
+      <p class="fine">{{ 'cart.taxes_note' | t }}</p>
+      <button class="button button--secondary" type="submit" name="update">{{ 'cart.update' | t }}</button>
+      <button class="button" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
+    </div>
+  {% endform %}
+{%- endif -%}

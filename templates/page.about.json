@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "body": "<p>Hycare is a supermarket for everyday food, drinks, cleaning, and household essentials. Use this page for your own story. Add hours and how to find the store when you are ready to publish them.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

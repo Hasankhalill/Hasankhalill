@@ -1,0 +1,25 @@
+<article class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width page-narrow">
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.published_at | date: format: 'date' }}</p>
+    {%- if article.image -%}
+      {{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600, 1000, 1600', sizes: '100vw', alt: article.image.alt }}
+    {%- endif -%}
+    <div class="rte">{{ article.content }}</div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "t:sections.article.name",
+  "enabled_on": { "templates": ["article"] },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.scheme",
+      "default": "scheme-3"
+    }
+  ]
+}
+{% endschema %}

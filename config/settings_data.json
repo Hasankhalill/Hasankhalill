@@ -1,0 +1,58 @@
+{
+  "current": {
+    "brand_name": "",
+    "logo_width": 140,
+    "type_heading_font": "fraunces_n6",
+    "type_body_font": "outfit_n4",
+    "accent_color": "#E8A317",
+    "page_color_scheme": "scheme-1",
+    "page_width": 1180,
+    "show_vendor": true,
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#F4EFE3",
+          "background_gradient": "",
+          "text": "#16241C",
+          "button": "#1B4332",
+          "button_label": "#F4EFE3",
+          "secondary_button_label": "#1B4332",
+          "shadow": "#16241C"
+        }
+      },
+      "scheme-2": {
+        "settings": {
+          "background": "#1B4332",
+          "background_gradient": "",
+          "text": "#F4EFE3",
+          "button": "#E8A317",
+          "button_label": "#16241C",
+          "secondary_button_label": "#F4EFE3",
+          "shadow": "#0C1C14"
+        }
+      },
+      "scheme-3": {
+        "settings": {
+          "background": "#FFFBF4",
+          "background_gradient": "",
+          "text": "#16241C",
+          "button": "#1B4332",
+          "button_label": "#FFFBF4",
+          "secondary_button_label": "#1B4332",
+          "shadow": "#16241C"
+        }
+      },
+      "scheme-4": {
+        "settings": {
+          "background": "#F6E2B3",
+          "background_gradient": "",
+          "text": "#16241C",
+          "button": "#1B4332",
+          "button_label": "#F4EFE3",
+          "secondary_button_label": "#16241C",
+          "shadow": "#16241C"
+        }
+      }
+    }
+  }
+}

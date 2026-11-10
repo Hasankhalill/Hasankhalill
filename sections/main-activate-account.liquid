@@ -1,0 +1,27 @@
+<section class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width page-narrow">
+    <h1>{{ 'customers.activate_title' | t }}</h1>
+    {% form 'activate_customer_password' %}
+      {%- if form.errors -%}
+        <div class="form-errors" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="form-stack">
+        <label for="ActivatePassword">{{ 'customers.password' | t }}</label>
+        <input id="ActivatePassword" type="password" name="customer[password]" autocomplete="new-password">
+        <label for="ActivatePasswordConfirm">{{ 'customers.confirm_password' | t }}</label>
+        <input id="ActivatePasswordConfirm" type="password" name="customer[password_confirmation]" autocomplete="new-password">
+        <button class="button" type="submit">{{ 'customers.activate' | t }}</button>
+        <button class="button button--secondary" type="submit" name="decline">{{ 'customers.decline' | t }}</button>
+      </div>
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.activate.name",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:labels.scheme", "default": "scheme-1" }
+  ]
+}
+{% endschema %}

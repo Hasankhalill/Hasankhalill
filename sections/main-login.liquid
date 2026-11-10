@@ -1,0 +1,43 @@
+<section class="band color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="page-width page-narrow">
+    <h1>{{ 'customers.login_title' | t }}</h1>
+    {% form 'customer_login' %}
+      {%- if form.errors -%}
+        <div class="form-errors" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="form-stack">
+        <div>
+          <label for="CustomerEmail">{{ 'customers.email' | t }}</label>
+          <input id="CustomerEmail" type="email" name="customer[email]" autocomplete="email" autocapitalize="off">
+        </div>
+        <div>
+          <label for="CustomerPassword">{{ 'customers.password' | t }}</label>
+          <input id="CustomerPassword" type="password" name="customer[password]" autocomplete="current-password">
+        </div>
+        <button class="button" type="submit">{{ 'customers.login' | t }}</button>
+      </div>
+    {% endform %}
+    <p><a href="{{ routes.account_register_url }}">{{ 'customers.register' | t }}</a></p>
+    <h2>{{ 'customers.recover_title' | t }}</h2>
+    {% form 'recover_customer_password' %}
+      {%- if form.posted_successfully? -%}
+        <p role="status">{{ 'customers.recover_success' | t }}</p>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <div class="form-errors" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <label for="RecoverEmail">{{ 'customers.email' | t }}</label>
+      <input id="RecoverEmail" type="email" name="email" autocomplete="email">
+      <button class="button button--secondary" type="submit">{{ 'customers.recover' | t }}</button>
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.login.name",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:labels.scheme", "default": "scheme-1" }
+  ]
+}
+{% endschema %}
