@@ -38,6 +38,8 @@ After you run the seed, open **June 2026** and look at **Toyota Corolla** (plate
 - $110 profit
 - The rental shows a $50 balance ($150 charged − $100 paid)
 
+On that Corolla rental, the sample also includes a before-pickup video and an after-return video for plate JAZ-1001.
+
 Other sample rows:
 
 - Honda Civic, pickup May 30 and return June 3, at $40/day: 2 days in May ($80) and 2 days in June ($80). The $160 payment is dated July 15, so May and June cash collected are $0 and July shows the cash.
@@ -48,6 +50,21 @@ Other sample rows:
 - Toyota Camry in August 2026: $180 charged, two payments totaling $130, $50 still due.
 
 The dashboard opens on the current month. Use the arrows to move back to June 2026. The sign-in screen also has **View the June 2026 sample**, which shows these numbers from data bundled in the app. That sample is not saved to Supabase.
+
+## Vehicle condition
+
+Each rental has **Record Before Pickup** and **Record After Return**. Record in the app, or choose a video already on the phone. Damage notes are optional.
+
+The app copies each video into its private document folder, and saves the rental and the notes on the phone. Closing the app does not remove them, and they play with no connection. The rental page shows both clips together, with the license plate, when the video was added, and one of these states:
+
+- **Saved on Phone** — copied locally, not backed up yet
+- **Uploading** — the backup is in progress
+- **Backed Up** — the file is in the private `condition-videos` storage bucket
+- **Upload Failed** — tap **Retry upload**. The phone copy stays either way
+
+Oil change, tires, repairs, and cleaning are unchanged: they are maintenance. Insurance and other expenses still count in total expenses and profit, but not in maintenance.
+
+When the phone is online again, pending rentals, notes, and videos sync. Video files are stored at `{owner id}/{rental id}/{video id}.mp4` and only the signed-in owner can read them. Sign in once while online. After that, airplane mode can still record a rental and both videos until the saved session expires.
 
 ## 1. Create a Supabase project
 
@@ -104,7 +121,7 @@ npx expo start
 - Android emulator: press `a` (Android Studio).
 - iOS simulator: press `i` (macOS with Xcode).
 
-Sign in with the owner email and password. Data is stored in Supabase, so the same fleet shows up on both phones.
+Sign in with the owner email and password. The phone keeps a local copy and syncs it to Supabase, so the same fleet shows up on both phones once they are online. Condition videos play from the phone that saved them, and the other phone downloads the backup when it is online.
 
 ## Tests
 
@@ -113,7 +130,7 @@ npm test
 npm run typecheck
 ```
 
-`npm test` runs the calculation and validation tests: same-day = 1 day, pickup included and return excluded, overlapping rentals rejected, non-overlapping and different cars allowed, a rental split across two months with cash on the payment date, partial payments (total, paid, balance), a month of expenses with no rentals (negative profit), and the Corolla numbers above. It also checks that the SQL seed still contains that sample fleet.
+`npm test` runs the calculation and validation tests: same-day = 1 day, pickup included and return excluded, overlapping rentals rejected, non-overlapping and different cars allowed, a rental split across two months with cash on the payment date, partial payments (total, paid, balance), a month of expenses with no rentals (negative profit), and the Corolla numbers above. It also checks that the SQL migrations keep row-level security, including condition videos and the private storage bucket. A separate test creates a rental and both condition videos with the network off, closes and reopens the local database, reads the video bytes back, then reconnects and checks that both files back up under that rental.
 
 ## Optional: Supabase CLI
 

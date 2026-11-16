@@ -1,5 +1,6 @@
 import { router, Stack } from "expo-router";
 
+import { ConditionSection } from "@/components/condition-section";
 import { Banner, Button, Card, Hint, ListRow, MoneyLine, Screen, SectionTitle } from "@/components/ui";
 import { rentalBalance } from "@/domain/billing";
 import { formatDate, formatUSD } from "@/domain/format";
@@ -59,6 +60,7 @@ export function RentalDetailScreen({ rentalId }: { rentalId: string }) {
       {rental.customerName ? <Hint>Customer: {rental.customerName}</Hint> : null}
       {rental.customerPhone ? <Hint>Phone: {rental.customerPhone}</Hint> : null}
       {rental.notes ? <Hint>Notes: {rental.notes}</Hint> : null}
+      <ConditionSection rentalId={rental.id} />
       {readOnly ? null : (
         <>
           <Button label="Edit rental" variant="secondary" onPress={() => router.push(paths.editRental(rental.id))} />

@@ -1,6 +1,7 @@
 import type { Session } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
+import { wipePhoneData } from "@/data/phone-repo";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 type AuthValue = {
@@ -58,6 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (error) throw new Error(error.message);
       },
       async signOut() {
+        await wipePhoneData();
         if (!supabase) return;
         const { error } = await supabase.auth.signOut();
         if (error) throw new Error(error.message);

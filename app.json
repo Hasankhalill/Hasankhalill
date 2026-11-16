@@ -33,7 +33,24 @@
           "imageWidth": 76
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-video",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Jazzar uses the camera to record the car before pickup and after return.",
+          "microphonePermission": "Jazzar records audio with the condition video.",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Jazzar lets you choose a condition video already saved on this phone.",
+          "cameraPermission": "Jazzar uses the camera to record the car before pickup and after return.",
+          "microphonePermission": "Jazzar records audio with the condition video."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

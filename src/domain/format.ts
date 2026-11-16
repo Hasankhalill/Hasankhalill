@@ -38,6 +38,18 @@ export function formatDate(iso: string): string {
   return `${SHORT_MONTHS[monthNumber - 1]} ${day}, ${year}`;
 }
 
+export function formatDateTime(iso: string, timeZone?: string): string {
+  const date = new Date(iso);
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone,
+  }).format(date);
+}
+
 export function formatUSD(amount: number): string {
   const negative = amount < 0;
   const [dollars, cents] = Math.abs(amount).toFixed(2).split(".");

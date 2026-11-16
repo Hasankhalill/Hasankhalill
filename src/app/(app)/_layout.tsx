@@ -21,6 +21,7 @@ export default function AppLayout() {
         <Stack.Screen name="car/[id]/edit" options={{ title: "Edit car" }} />
         <Stack.Screen name="rental/new" options={{ title: "Add rental" }} />
         <Stack.Screen name="rental/[id]/index" options={{ title: "Rental" }} />
+        <Stack.Screen name="rental/[id]/condition/[phase]" options={{ title: "Vehicle condition" }} />
         <Stack.Screen name="rental/[id]/edit" options={{ title: "Edit rental" }} />
         <Stack.Screen name="rental/[id]/payment/new" options={{ title: "Add payment" }} />
         <Stack.Screen name="rental/[id]/payment/[paymentId]" options={{ title: "Edit payment" }} />

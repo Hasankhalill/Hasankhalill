@@ -1,5 +1,7 @@
 import type { Href } from "expo-router";
 
+import type { ConditionPhase } from "@/domain/condition";
+
 export type AppPaths = {
   car: (id: string, month: string) => Href;
   editCar: (id: string) => Href;
@@ -11,6 +13,7 @@ export type AppPaths = {
   editExpense: (id: string) => Href;
   newPayment: (rentalId: string) => Href;
   editPayment: (rentalId: string, paymentId: string) => Href;
+  recordCondition: (rentalId: string, phase: ConditionPhase) => Href;
 };
 
 function href(path: string): Href {
@@ -28,6 +31,7 @@ export const livePaths: AppPaths = {
   editExpense: (id) => href(`/expense/${id}`),
   newPayment: (rentalId) => href(`/rental/${rentalId}/payment/new`),
   editPayment: (rentalId, paymentId) => href(`/rental/${rentalId}/payment/${paymentId}`),
+  recordCondition: (rentalId, phase) => href(`/rental/${rentalId}/condition/${phase}`),
 };
 
 export const previewPaths: AppPaths = {
@@ -41,4 +45,5 @@ export const previewPaths: AppPaths = {
   editExpense: () => "/preview",
   newPayment: () => "/preview",
   editPayment: () => "/preview",
+  recordCondition: () => "/preview",
 };

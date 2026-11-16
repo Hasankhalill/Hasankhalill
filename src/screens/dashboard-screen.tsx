@@ -15,7 +15,7 @@ import { colors } from "@/theme";
 export function DashboardScreen() {
   const { email, signOut } = useAuth();
   const fleetApi = useFleet();
-  const { fleet, loading, error, refresh, refreshing, readOnly, initialMonth, paths } = fleetApi;
+  const { fleet, loading, error, refresh, refreshing, readOnly, initialMonth, paths, online } = fleetApi;
   const { month, canForward, back, forward } = useMonth(initialMonth);
   const report = summarizeFleetMonth(month, fleet);
   const quiet =
@@ -32,6 +32,9 @@ export function DashboardScreen() {
         <Banner>
           Sample data for June 2026. Nothing here is saved. The Toyota Corolla row is the worked example: 5 days, $150 revenue, $100 collected, $40 expenses, $110 profit.
         </Banner>
+      ) : null}
+      {!readOnly && !online ? (
+        <Banner>You're offline. Rentals, notes, and condition videos stay on this phone and sync when you reconnect.</Banner>
       ) : null}
       {error ? <Banner tone="error">{error}</Banner> : null}
       <MonthSwitcher month={month} canForward={canForward} onBack={back} onForward={forward} />
