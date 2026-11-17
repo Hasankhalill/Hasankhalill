@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     borderColor: colors.line,
     flex: 1,
     overflow: "hidden",
-    shadowColor: "#071410",
+    shadowColor: "#121820",
     shadowOpacity: 0.14,
     shadowRadius: 18,
     shadowOffset: { width: 0, height: 10 },

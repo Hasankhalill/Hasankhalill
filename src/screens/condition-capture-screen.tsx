@@ -264,7 +264,7 @@ function WebRecorder({
             autoPlay
             muted
             playsInline
-            style={{ width: "100%", height: 240, backgroundColor: "#1C1915", borderRadius: 12 }}
+            style={{ width: "100%", height: 240, backgroundColor: colors.page, borderRadius: 12 }}
           />
         )
         : null}

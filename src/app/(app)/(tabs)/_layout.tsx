@@ -10,8 +10,8 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: colors.gold,
-        tabBarInactiveTintColor: "#9AAB9F",
-        tabBarStyle: { backgroundColor: colors.page, borderTopColor: "#24382F" },
+        tabBarInactiveTintColor: "#9AA6B5",
+        tabBarStyle: { backgroundColor: colors.page, borderTopColor: "#2C3848" },
         headerStyle: { backgroundColor: colors.page },
         headerTintColor: colors.onPhoto,
         headerTitleStyle: { fontWeight: "700", color: colors.onPhoto },

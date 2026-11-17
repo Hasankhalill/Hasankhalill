@@ -146,5 +146,5 @@ const styles = StyleSheet.create({
   status: { color: colors.ink, fontSize: 14, fontWeight: "800" },
   failed: { color: colors.danger },
   good: { color: colors.brand },
-  video: { width: "100%", height: 220, borderRadius: 12, backgroundColor: "#1C1915" },
+  video: { width: "100%", height: 220, borderRadius: 12, backgroundColor: colors.page },
 });

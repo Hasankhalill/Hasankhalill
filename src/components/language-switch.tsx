@@ -37,7 +37,7 @@ function Choice({ label, selected, onPress }: { label: string; selected: boolean
 const styles = StyleSheet.create({
   track: {
     flexDirection: "row",
-    backgroundColor: "#E7F3EE",
+    backgroundColor: "#F8EDE6",
     borderRadius: 999,
     padding: 3,
     gap: 2,
