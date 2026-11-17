@@ -7,9 +7,11 @@ import { formatDate, formatUSD } from "@/domain/format";
 import { paymentsForRental } from "@/domain/report";
 import { confirmDelete } from "@/lib/confirm";
 import { useFleet } from "@/lib/fleet";
+import { useLocale } from "@/lib/locale";
 import { useState } from "react";
 
 export function RentalDetailScreen({ rentalId }: { rentalId: string }) {
+  const { t } = useLocale();
   const { fleet, refresh, refreshing, readOnly, paths, deleteRental } = useFleet();
   const rental = fleet.rentals.find((item) => item.id === rentalId);
   const car = fleet.cars.find((item) => item.id === rental?.carId);
@@ -19,7 +21,7 @@ export function RentalDetailScreen({ rentalId }: { rentalId: string }) {
   if (!rental) {
     return (
       <Screen>
-        <Hint>That rental is not on file.</Hint>
+        <Hint>{t("rentalMissing")}</Hint>
       </Screen>
     );
   }
@@ -42,24 +44,24 @@ export function RentalDetailScreen({ rentalId }: { rentalId: string }) {
 
   return (
     <Screen onRefresh={readOnly ? undefined : refresh} refreshing={refreshing}>
-      <Stack.Screen options={{ title: car?.name ?? "Rental" }} />
+      <Stack.Screen options={{ title: car?.name ?? t("rental") }} />
       {error ? <Banner tone="error">{error}</Banner> : null}
       <Card>
         <Hint>
-          {formatDate(rental.pickupDate)} → {formatDate(rental.returnDate)} · {formatUSD(rental.dailyRate)} / day
+          {formatDate(rental.pickupDate)} → {formatDate(rental.returnDate)} · {formatUSD(rental.dailyRate)} {t("perDay")}
         </Hint>
-        <MoneyLine label="Billed days" value={String(balance.days)} />
-        <MoneyLine label="Total charged" value={formatUSD(balance.total)} />
-        <MoneyLine label="Amount paid" value={formatUSD(balance.paid)} />
+        <MoneyLine label={t("billedDays")} value={String(balance.days)} />
+        <MoneyLine label={t("totalCharged")} value={formatUSD(balance.total)} />
+        <MoneyLine label={t("amountPaid")} value={formatUSD(balance.paid)} />
         <MoneyLine
-          label="Remaining balance"
+          label={t("remainingBalance")}
           value={formatUSD(balance.balance)}
           tone={balance.balance > 0 ? "bad" : balance.balance < 0 ? "bad" : "good"}
         />
       </Card>
-      {rental.customerName ? <Hint>Customer: {rental.customerName}</Hint> : null}
-      {rental.customerPhone ? <Hint>Phone: {rental.customerPhone}</Hint> : null}
-      {rental.notes ? <Hint>Notes: {rental.notes}</Hint> : null}
+      {rental.customerName ? <Hint>{t("customer")}: {rental.customerName}</Hint> : null}
+      {rental.customerPhone ? <Hint>{t("phone")}: {rental.customerPhone}</Hint> : null}
+      {rental.notes ? <Hint>{t("notes")}: {rental.notes}</Hint> : null}
       <ConditionSection rentalId={rental.id} />
       {readOnly ? null : (
         <>
@@ -67,8 +69,8 @@ export function RentalDetailScreen({ rentalId }: { rentalId: string }) {
           <Button label="Add payment" onPress={() => router.push(paths.newPayment(rental.id))} />
         </>
       )}
-      <SectionTitle>Payments</SectionTitle>
-      {payments.length === 0 ? <Hint>No payments yet.</Hint> : null}
+      <SectionTitle>{t("payments")}</SectionTitle>
+      {payments.length === 0 ? <Hint>{t("noPayments")}</Hint> : null}
       {payments.map((payment) => (
         <ListRow
           key={payment.id}

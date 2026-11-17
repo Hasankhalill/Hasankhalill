@@ -1,3 +1,5 @@
+export type DisplayLocale = "en" | "ar";
+
 const MONTHS = [
   "January",
   "February",
@@ -12,6 +14,31 @@ const MONTHS = [
   "November",
   "December",
 ];
+
+const ARABIC_MONTHS = [
+  "كانون الثاني",
+  "شباط",
+  "آذار",
+  "نيسان",
+  "أيار",
+  "حزيران",
+  "تموز",
+  "آب",
+  "أيلول",
+  "تشرين الأول",
+  "تشرين الثاني",
+  "كانون الأول",
+];
+
+let activeLocale: DisplayLocale = "en";
+
+export function setActiveLocale(locale: DisplayLocale) {
+  activeLocale = locale;
+}
+
+export function getActiveLocale(): DisplayLocale {
+  return activeLocale;
+}
 
 const SHORT_MONTHS = [
   "Jan",
@@ -30,17 +57,19 @@ const SHORT_MONTHS = [
 
 export function formatMonth(month: string): string {
   const [year, monthNumber] = month.split("-").map(Number);
-  return `${MONTHS[monthNumber - 1]} ${year}`;
+  const name = (activeLocale === "ar" ? ARABIC_MONTHS : MONTHS)[monthNumber - 1];
+  return `${name} ${year}`;
 }
 
 export function formatDate(iso: string): string {
   const [year, monthNumber, day] = iso.split("-").map(Number);
+  if (activeLocale === "ar") return `${day} ${ARABIC_MONTHS[monthNumber - 1]} ${year}`;
   return `${SHORT_MONTHS[monthNumber - 1]} ${day}, ${year}`;
 }
 
 export function formatDateTime(iso: string, timeZone?: string): string {
   const date = new Date(iso);
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(activeLocale === "ar" ? "ar-LB-u-nu-latn" : "en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",

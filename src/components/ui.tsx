@@ -12,6 +12,7 @@ import {
   type TextInputProps,
 } from "react-native";
 
+import { useLocale } from "@/lib/locale";
 import { colors, space } from "@/theme";
 
 export function Screen({
@@ -23,6 +24,7 @@ export function Screen({
   onRefresh?: () => void;
   refreshing?: boolean;
 }) {
+  const { t } = useLocale();
   return (
     <ScrollView
       style={styles.page}
@@ -30,14 +32,14 @@ export function Screen({
       keyboardShouldPersistTaps="handled"
       refreshControl={
         onRefresh && Platform.OS !== "web" ? (
-          <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} tintColor={colors.brand} />
+          <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} tintColor={colors.onPhoto} />
         ) : undefined
       }
     >
       <View style={styles.column}>
         {onRefresh && Platform.OS === "web" ? (
           <Pressable accessibilityRole="button" onPress={onRefresh} style={styles.refresh}>
-            <Text style={styles.refreshText}>{refreshing ? "Refreshing…" : "Refresh"}</Text>
+            <Text style={styles.refreshText}>{refreshing ? t("refreshing") : t("refresh")}</Text>
           </Pressable>
         ) : null}
         {children}
@@ -122,11 +124,12 @@ export function SectionTitle({ children }: { children: ReactNode }) {
   return <Text style={styles.section}>{children}</Text>;
 }
 
-export function LoadingState({ label = "Loading the fleet…" }: { label?: string }) {
+export function LoadingState({ label }: { label?: string }) {
+  const { t } = useLocale();
   return (
     <View style={styles.center}>
-      <ActivityIndicator color={colors.brand} />
-      <Text style={styles.hint}>{label}</Text>
+      <ActivityIndicator color={colors.onPhoto} />
+      <Text style={styles.loadingLabel}>{label ?? t("loading")}</Text>
     </View>
   );
 }
@@ -160,15 +163,18 @@ export function ListRow({
   title,
   subtitle,
   meta,
+  leading,
   onPress,
 }: {
   title: string;
   subtitle?: string;
   meta?: string;
+  leading?: ReactNode;
   onPress?: () => void;
 }) {
   const body = (
     <View style={styles.row}>
+      {leading}
       <View style={styles.rowText}>
         <Text style={styles.rowTitle}>{title}</Text>
         {subtitle ? <Text style={styles.rowSubtitle}>{subtitle}</Text> : null}
@@ -185,18 +191,30 @@ export function ListRow({
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.bg },
-  content: { alignItems: "center", paddingBottom: 32 },
-  column: { width: "100%", maxWidth: 520, padding: space.lg, gap: space.md },
+  page: { flex: 1, backgroundColor: colors.page },
+  content: { alignItems: "center", paddingBottom: 48, paddingTop: 18 },
+  column: {
+    width: "100%",
+    maxWidth: 640,
+    padding: space.lg,
+    gap: space.md,
+    backgroundColor: colors.bg,
+    borderRadius: 28,
+  },
   refresh: { alignSelf: "center", paddingTop: space.sm },
   refreshText: { color: colors.brand, fontWeight: "700" },
   card: {
     backgroundColor: colors.card,
-    borderRadius: 16,
+    borderRadius: 18,
     borderWidth: 1,
     borderColor: colors.line,
     padding: space.lg,
     gap: space.sm,
+    shadowColor: "#071410",
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 3,
   },
   cardSoft: { backgroundColor: colors.brandSoft, borderColor: "#C9E6DA" },
   button: {
@@ -237,7 +255,8 @@ const styles = StyleSheet.create({
   bannerErrorText: { color: colors.danger },
   hint: { color: colors.muted, fontSize: 14, lineHeight: 20 },
   section: { color: colors.ink, fontSize: 18, fontWeight: "800", marginTop: space.sm },
-  center: { padding: space.xl, alignItems: "center", gap: space.sm },
+  center: { flex: 1, backgroundColor: colors.page, padding: space.xl, alignItems: "center", justifyContent: "center", gap: space.sm },
+  loadingLabel: { color: colors.onPhoto, fontSize: 14 },
   moneyLine: { flexDirection: "row", justifyContent: "space-between", gap: space.md },
   moneyLabel: { color: colors.muted, fontSize: 15 },
   moneyValue: { color: colors.ink, fontSize: 16, fontWeight: "700" },

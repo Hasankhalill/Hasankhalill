@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { formatMonth } from "@/domain/format";
+import { useLocale } from "@/lib/locale";
 import { colors } from "@/theme";
 
 export function MonthSwitcher({
@@ -14,15 +15,16 @@ export function MonthSwitcher({
   onBack: () => void;
   onForward: () => void;
 }) {
+  const { t } = useLocale();
   return (
     <View style={styles.bar}>
-      <Pressable accessibilityRole="button" accessibilityLabel="Previous month" onPress={onBack} style={styles.nav}>
+      <Pressable accessibilityRole="button" accessibilityLabel={t("previousMonth")} onPress={onBack} style={styles.nav}>
         <Text style={styles.navText}>‹</Text>
       </Pressable>
       <Text style={styles.label}>{formatMonth(month)}</Text>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Next month"
+        accessibilityLabel={t("nextMonth")}
         disabled={!canForward}
         onPress={onForward}
         style={styles.nav}

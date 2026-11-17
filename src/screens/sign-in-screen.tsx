@@ -1,12 +1,15 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
+import { LanguageSwitch } from "@/components/language-switch";
 import { Banner, Button, Screen, TextField } from "@/components/ui";
 import { useAuth } from "@/lib/auth";
+import { useLocale } from "@/lib/locale";
 import { colors } from "@/theme";
 
 export function SignInScreen() {
+  const { t } = useLocale();
   const { configured, session, signIn } = useAuth();
   useEffect(() => {
     if (session) router.replace("/");
@@ -22,23 +25,22 @@ export function SignInScreen() {
     try {
       await signIn(email, password);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not sign in.");
+      setError(err instanceof Error ? err.message : t("couldNotSignIn"));
       setBusy(false);
     }
   }
 
   return (
     <Screen>
-      <Text style={styles.mark}>Jazzar</Text>
-      <Text style={styles.sub}>Fleet desk for the owner. Amounts are in USD.</Text>
-      {configured ? null : (
-        <Banner>
-          Copy .env.example to .env and set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY, then restart Expo. You can still open the June 2026 sample below.
-        </Banner>
-      )}
+      <View style={styles.mast}>
+        <Text style={styles.mark}>Jazzar</Text>
+        <LanguageSwitch />
+      </View>
+      <Text style={styles.sub}>{t("fleetDesk")}</Text>
+      {configured ? null : <Banner>{t("setupBanner")}</Banner>}
       {error ? <Banner tone="error">{error}</Banner> : null}
       <TextField
-        label="Email"
+        label={t("email")}
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -47,20 +49,21 @@ export function SignInScreen() {
         placeholder="owner@jazzar.app"
       />
       <TextField
-        label="Password"
+        label={t("password")}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
         autoComplete="password"
         placeholder="Password"
       />
-      <Button label={busy ? "Signing in…" : "Sign in"} onPress={() => void onSubmit()} disabled={busy} />
-      <Button label="View the June 2026 sample" variant="secondary" onPress={() => router.push("/preview")} />
+      <Button label={busy ? t("signingIn") : t("signIn")} onPress={() => void onSubmit()} disabled={busy} />
+      <Button label={t("viewSample")} variant="secondary" onPress={() => router.push("/preview")} />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  mast: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   mark: { fontSize: 40, fontWeight: "800", color: colors.brand, letterSpacing: -0.5 },
   sub: { fontSize: 16, color: colors.muted, marginTop: -4 },
 });

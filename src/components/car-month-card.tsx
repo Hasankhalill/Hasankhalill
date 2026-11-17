@@ -1,7 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { CarPhoto } from "@/components/car-photo";
 import { formatUSD } from "@/domain/format";
 import type { Car, CarMonthSummary } from "@/domain/types";
+import { useLocale } from "@/lib/locale";
 import { colors, space } from "@/theme";
 
 export function CarMonthCard({
@@ -13,31 +15,36 @@ export function CarMonthCard({
   summary: CarMonthSummary;
   onPress?: () => void;
 }) {
+  const { t } = useLocale();
   const profitTone = summary.profit < 0 ? styles.bad : summary.profit > 0 ? styles.good : undefined;
+  const dayWord = summary.rentedDays === 1 ? t("day") : t("days");
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={`${car.name}, ${summary.rentedDays} rented ${summary.rentedDays === 1 ? "day" : "days"}, revenue ${formatUSD(summary.rentalRevenue)}, collected ${formatUSD(summary.cashCollected)}, expenses ${formatUSD(summary.totalExpenses)}, profit ${formatUSD(summary.profit)}`}
-      onPress={onPress}
-      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
-    >
-      <View style={styles.header}>
-        <View style={styles.titles}>
-          <Text style={styles.name}>{car.name}</Text>
-          <Text style={styles.meta}>
-            {car.year} · {car.licensePlate}
+    <View style={styles.card}>
+      <CarPhoto carId={car.id} name={car.name} />
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${car.name}, ${summary.rentedDays} ${dayWord}, ${t("rentalRevenue")} ${formatUSD(summary.rentalRevenue)}, ${t("cashCollected")} ${formatUSD(summary.cashCollected)}, ${t("totalExpenses")} ${formatUSD(summary.totalExpenses)}, ${t("profit")} ${formatUSD(summary.profit)}`}
+        onPress={onPress}
+        style={({ pressed }) => [styles.body, pressed && styles.pressed]}
+      >
+        <View style={styles.header}>
+          <View style={styles.titles}>
+            <Text style={styles.name}>{car.name}</Text>
+            <Text style={styles.meta}>
+              {car.year} · {car.licensePlate}
+            </Text>
+          </View>
+          <Text style={styles.days}>
+            {summary.rentedDays} {dayWord}
           </Text>
         </View>
-        <Text style={styles.days}>
-          {summary.rentedDays} {summary.rentedDays === 1 ? "day" : "days"}
-        </Text>
-      </View>
-      <Line label="Rental revenue" value={formatUSD(summary.rentalRevenue)} />
-      <Line label="Cash collected" value={formatUSD(summary.cashCollected)} />
-      <Line label="Maintenance" value={formatUSD(summary.maintenanceCosts)} />
-      <Line label="Total expenses" value={formatUSD(summary.totalExpenses)} />
-      <Line label="Profit" value={formatUSD(summary.profit)} valueStyle={profitTone} />
-    </Pressable>
+        <Line label={t("rentalRevenue")} value={formatUSD(summary.rentalRevenue)} />
+        <Line label={t("cashCollected")} value={formatUSD(summary.cashCollected)} />
+        <Line label={t("maintenance")} value={formatUSD(summary.maintenanceCosts)} />
+        <Line label={t("totalExpenses")} value={formatUSD(summary.totalExpenses)} />
+        <Line label={t("profit")} value={formatUSD(summary.profit)} valueStyle={profitTone} />
+      </Pressable>
+    </View>
   );
 }
 
@@ -61,13 +68,18 @@ function Line({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.card,
-    borderRadius: 16,
+    borderRadius: 18,
     borderWidth: 1,
     borderColor: colors.line,
-    padding: space.lg,
-    gap: 6,
+    overflow: "hidden",
+    shadowColor: "#071410",
+    shadowOpacity: 0.14,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 4,
   },
-  pressed: { opacity: 0.92 },
+  pressed: { opacity: 0.94, transform: [{ scale: 0.985 }] },
+  body: { padding: space.lg, gap: 6 },
   header: { flexDirection: "row", justifyContent: "space-between", gap: space.md, marginBottom: 4 },
   titles: { flex: 1, gap: 2 },
   name: { fontSize: 18, fontWeight: "800", color: colors.ink },
