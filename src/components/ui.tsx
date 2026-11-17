@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   content: { alignItems: "center", paddingBottom: 48, paddingTop: 18 },
   column: {
     width: "100%",
-    maxWidth: 640,
+    maxWidth: 1120,
     padding: space.lg,
     gap: space.md,
     backgroundColor: colors.bg,

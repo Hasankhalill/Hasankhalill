@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     borderWidth: 1,
     borderColor: colors.line,
+    flex: 1,
     overflow: "hidden",
     shadowColor: "#071410",
     shadowOpacity: 0.14,

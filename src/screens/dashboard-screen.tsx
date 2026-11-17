@@ -74,14 +74,17 @@ export function DashboardScreen() {
           <SectionTitle>{t("cars")}</SectionTitle>
           <Hint>{t("photoStays")}</Hint>
           {quiet ? <Hint>{t("quietMonth")}</Hint> : null}
-          {fleet.cars.map((car, index) => (
-            <CarMonthCard
-              key={car.id}
-              car={car}
-              summary={report.cars[index]}
-              onPress={() => router.push(paths.car(car.id, month))}
-            />
-          ))}
+          <View style={styles.grid}>
+            {fleet.cars.map((car, index) => (
+              <View key={car.id} style={styles.cell}>
+                <CarMonthCard
+                  car={car}
+                  summary={report.cars[index]}
+                  onPress={() => router.push(paths.car(car.id, month))}
+                />
+              </View>
+            ))}
+          </View>
         </>
       )}
       <Hint>{t("maintenanceRule")}</Hint>
@@ -107,4 +110,6 @@ const styles = StyleSheet.create({
   action: { flex: 1 },
   fleetTitle: { fontSize: 16, fontWeight: "800", color: colors.ink },
   empty: { fontSize: 16, color: colors.ink },
+  grid: { flexDirection: "row", flexWrap: "wrap", gap: 12, alignItems: "stretch" },
+  cell: { flexGrow: 1, flexShrink: 1, flexBasis: "31%", minWidth: 280 },
 });
