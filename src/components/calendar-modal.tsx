@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   grid: { flexDirection: "row", flexWrap: "wrap" },
   day: { width: "14.28%", aspectRatio: 1, alignItems: "center", justifyContent: "center" },
   dayText: { fontSize: 16, color: colors.ink },
-  outside: { color: "#B7AFA3" },
+  outside: { color: "#A8B0BC" },
   selected: { backgroundColor: colors.brand, borderRadius: 999 },
   selectedText: { color: colors.white, fontWeight: "800" },
 });
