@@ -12,6 +12,7 @@ import {
   type TextInputProps,
 } from "react-native";
 
+import { ShowroomBackdrop } from "@/components/showroom";
 import { useLocale } from "@/lib/locale";
 import { colors, space } from "@/theme";
 
@@ -26,16 +27,18 @@ export function Screen({
 }) {
   const { t } = useLocale();
   return (
-    <ScrollView
-      style={styles.page}
-      contentContainerStyle={styles.content}
-      keyboardShouldPersistTaps="handled"
-      refreshControl={
-        onRefresh && Platform.OS !== "web" ? (
-          <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} tintColor={colors.onPhoto} />
-        ) : undefined
-      }
-    >
+    <View style={styles.frame}>
+      <ShowroomBackdrop />
+      <ScrollView
+        style={styles.page}
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+        refreshControl={
+          onRefresh && Platform.OS !== "web" ? (
+            <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} tintColor={colors.onPhoto} />
+          ) : undefined
+        }
+      >
       <View style={styles.column}>
         {onRefresh && Platform.OS === "web" ? (
           <Pressable accessibilityRole="button" onPress={onRefresh} style={styles.refresh}>
@@ -44,7 +47,8 @@ export function Screen({
         ) : null}
         {children}
       </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -191,11 +195,12 @@ export function ListRow({
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.page },
-  content: { alignItems: "center", paddingBottom: 48, paddingTop: 18 },
+  frame: { flex: 1, backgroundColor: colors.page },
+  page: { flex: 1, backgroundColor: "transparent" },
+  content: { alignItems: "center", paddingBottom: 48, paddingTop: 156, paddingHorizontal: 28 },
   column: {
     width: "100%",
-    maxWidth: 1120,
+    maxWidth: 1040,
     padding: space.lg,
     gap: space.md,
     backgroundColor: colors.bg,
